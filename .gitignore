@@ -1,0 +1,56 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Datasets (Never commit datasets)
+data/
+**/data/
+**/data/raw/
+**/data/cache/
+*.zip
+*.tar
+*.tar.gz
+
+# Model Weights & Checkpoints (Never commit weights)
+*.pt
+*.pth
+*.onnx
+*.ckpt
+*.bin
+*.h5
+*.tflite
+outputs/*.pth
+outputs/*.pt
+
+# Temporary / IDE
+.vscode/
+.idea/
