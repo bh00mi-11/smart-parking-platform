@@ -1,0 +1,25 @@
+{
+  "test_crops_count": 30,
+  "accuracy": 0.9,
+  "precision": 0.9643,
+  "recall": 0.931,
+  "f1_score": 0.9474,
+  "confusion_matrix": {
+    "labels": [
+      "Free (0)",
+      "Occupied (1)"
+    ],
+    "matrix": [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        27
+      ]
+    ]
+  },
+  "inference_latency_cpu_ms_per_crop": 3.84,
+  "throughput_crops_per_sec": 260.2
+}
