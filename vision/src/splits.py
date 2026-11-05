@@ -1,9 +1,11 @@
 """
 Data splitting protocols for parking occupancy datasets.
-Implements two leakage-safe splitting protocols:
-1. 'unseen-lot': Train/val on two PKLot lots, test on the remaining third lot.
-2. 'time-based': Split strictly by DAY (never random per slot), ensuring crops
+Implements:
+1. 'leave-one-lot-out' (loo): 3 folds where each fold holds out one PKLot lot as test,
+   with training and validation partitioned strictly by day on the other two lots.
+2. 'time-based': Split strictly by DAY within lots, ensuring crops
    from the same full-frame image never leak across splits.
+3. 'unseen-lot': Direct unseen lot evaluation.
 
 Also provides:
 - assert_no_data_leakage()
@@ -15,18 +17,19 @@ from pathlib import Path
 from typing import Dict, List, Set, Tuple
 import xml.etree.ElementTree as ET
 
+PKLOT_LOTS = ["PUCPR", "UFPR04", "UFPR05"]
+
+
 def get_pklot_image_metadata(img_path: Path, xml_path: Path) -> Dict:
     """
     Extracts metadata from PKLot file paths and XML headers.
     """
     parts = img_path.parts
-    # Assumes path like .../PKLot/<lot>/<weather>/<date>/<filename>.jpg
     filename = img_path.name
     date_str = img_path.parent.name
     weather = img_path.parent.parent.name
     lot = img_path.parent.parent.parent.name
 
-    # Parse occupied and free counts
     tree = ET.parse(xml_path)
     root = tree.getroot()
     occupied = 0
@@ -48,6 +51,67 @@ def get_pklot_image_metadata(img_path: Path, xml_path: Path) -> Dict:
         "total_slots": occupied + free
     }
 
+
+def make_leave_one_lot_out_splits(
+    samples: List[Tuple[Path, Path]],
+    fold: int = 0,
+    val_day_ratio: float = 0.2,
+    seed: int = 42
+) -> Dict[str, List[Tuple[Path, Path]]]:
+    """
+    Leave-one-lot-out (LOO) 3-fold cross-validation protocol across PKLot lots:
+    Fold 0: Test on PUCPR, train/val on UFPR04 + UFPR05
+    Fold 1: Test on UFPR04, train/val on PUCPR + UFPR05
+    Fold 2: Test on UFPR05, train/val on PUCPR + UFPR04
+
+    Validation split is created strictly by day within the training lots.
+    """
+    if fold < 0 or fold >= len(PKLOT_LOTS):
+        raise ValueError(f"Fold index must be in [0, {len(PKLOT_LOTS)-1}]. Got {fold}")
+
+    test_lot = PKLOT_LOTS[fold]
+    train_lots = [lot for lot in PKLOT_LOTS if lot != test_lot]
+
+    splits: Dict[str, List[Tuple[Path, Path]]] = {"train": [], "val": [], "test": []}
+
+    # Group non-test images by (lot, day)
+    lot_days = defaultdict(set)
+    day_to_samples = defaultdict(list)
+
+    for img_p, xml_p in samples:
+        lot = img_p.parent.parent.parent.name
+        day = img_p.parent.name
+        if lot == test_lot:
+            splits["test"].append((img_p, xml_p))
+        else:
+            lot_days[lot].add(day)
+            day_to_samples[(lot, day)].append((img_p, xml_p))
+
+    # Split train vs val by day within each training lot
+    for lot in train_lots:
+        sorted_days = sorted(list(lot_days[lot]))
+        n_days = len(sorted_days)
+        if n_days <= 1:
+            # If only 1 day, assign to train
+            for d in sorted_days:
+                splits["train"].extend(day_to_samples[(lot, d)])
+        else:
+            n_val = max(1, int(round(n_days * val_day_ratio)))
+            val_days = set(sorted_days[-n_val:])
+            for d in sorted_days:
+                if d in val_days:
+                    splits["val"].extend(day_to_samples[(lot, d)])
+                else:
+                    splits["train"].extend(day_to_samples[(lot, d)])
+
+    # Edge-case fallback: if val is still empty, shift 1 sample or day
+    if len(splits["val"]) == 0 and len(splits["train"]) > 1:
+        splits["val"].append(splits["train"].pop())
+
+    assert_no_data_leakage(splits)
+    return splits
+
+
 def make_unseen_lot_split(
     samples: List[Tuple[Path, Path]],
     test_lot: str = "UFPR05",
@@ -57,7 +121,6 @@ def make_unseen_lot_split(
     """
     Creates an unseen-lot split:
     Train on train_lot, validate on val_lot, test on test_lot.
-    If only 2 lots are provided, train/val are split by day on the training lots.
     """
     splits: Dict[str, List[Tuple[Path, Path]]] = {"train": [], "val": [], "test": []}
 
@@ -70,7 +133,6 @@ def make_unseen_lot_split(
         else:
             splits["train"].append((img_p, xml_p))
 
-    # If any split is empty, gracefully distribute training lots by day
     if len(splits["train"]) == 0 or len(splits["val"]) == 0:
         non_test = [(img, xml) for img, xml in samples if img.parent.parent.parent.name != test_lot]
         days = sorted(list(set(img.parent.name for img, xml in non_test)))
@@ -78,7 +140,9 @@ def make_unseen_lot_split(
         splits["train"] = [(img, xml) for img, xml in non_test if img.parent.name not in val_days]
         splits["val"] = [(img, xml) for img, xml in non_test if img.parent.name in val_days]
 
+    assert_no_data_leakage(splits)
     return splits
+
 
 def make_time_based_split(
     samples: List[Tuple[Path, Path]],
@@ -91,7 +155,6 @@ def make_time_based_split(
     Ensures that every crop from a given camera frame stays together,
     preventing intra-image and temporal data leakage.
     """
-    # Group by (lot, day)
     lot_days = defaultdict(set)
     day_to_samples = defaultdict(list)
 
@@ -108,7 +171,6 @@ def make_time_based_split(
         n_days = len(sorted_days)
 
         if n_days == 1:
-            # Fallback if only 1 day: assign to train
             train_days = sorted_days
             val_days = []
             test_days = []
@@ -134,7 +196,9 @@ def make_time_based_split(
         for d in test_days:
             splits["test"].extend(day_to_samples[(lot, d)])
 
+    assert_no_data_leakage(splits)
     return splits
+
 
 def assert_no_data_leakage(splits: Dict[str, List[Tuple[Path, Path]]]):
     """
@@ -154,7 +218,7 @@ def assert_no_data_leakage(splits: Dict[str, List[Tuple[Path, Path]]]):
                 f"Data leakage detected between '{s1}' and '{s2}'! "
                 f"Overlapping images: {overlap}"
             )
-    print("[PASSED] Verification passed: 0 image leakage between split partitions.")
+
 
 def get_split_stats(splits: Dict[str, List[Tuple[Path, Path]]]) -> Dict:
     """
@@ -190,6 +254,7 @@ def get_split_stats(splits: Dict[str, List[Tuple[Path, Path]]]) -> Dict:
             "lots": sorted(list(lots))
         }
     return stats
+
 
 def print_split_summary(split_name_desc: str, splits: Dict[str, List[Tuple[Path, Path]]]):
     assert_no_data_leakage(splits)

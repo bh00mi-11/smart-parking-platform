@@ -13,6 +13,9 @@ import torch
 import torchvision.transforms as T
 from PIL import Image
 
+if hasattr(torch.backends, "mkldnn"):
+    torch.backends.mkldnn.enabled = False
+
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
 
@@ -113,17 +116,23 @@ def classify_slots(
     if not crops_tensors:
         return []
 
-    batch_tensor = torch.stack(crops_tensors).to(device)
+    batch_size = 32
+    all_preds = []
+    all_confs = []
 
     with torch.no_grad():
-        logits = model(batch_tensor)
-        probs = torch.softmax(logits, dim=1)
-        preds = torch.argmax(probs, dim=1).cpu().numpy()
-        confs = probs.cpu().numpy()
+        for b_start in range(0, len(crops_tensors), batch_size):
+            b_chunk = torch.stack(crops_tensors[b_start:b_start + batch_size]).to(device)
+            logits = model(b_chunk)
+            probs = torch.softmax(logits, dim=1)
+            preds = torch.argmax(probs, dim=1).cpu().numpy()
+            confs = probs.cpu().numpy()
+            all_preds.extend(preds)
+            all_confs.extend(confs)
 
     for i in range(len(slot_ids)):
-        pred_label = int(preds[i])
-        confidence_val = float(confs[i][pred_label])
+        pred_label = int(all_preds[i])
+        confidence_val = float(all_confs[i][pred_label])
         results.append({
             "slot_id": slot_ids[i],
             "occupied": pred_label,
