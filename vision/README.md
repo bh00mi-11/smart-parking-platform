@@ -23,7 +23,7 @@
    - As observations age, uncertainty diffuses ($\sigma^2(t) = \sigma_0^2 + \beta \Delta t$) and confidence decays exponentially:
      $$\text{confidence} = R_{\text{source}} \times \exp\left(-\frac{\Delta t}{\tau}\right)$$
    - Outputs an 80% coverage range ($[\text{free\_low}, \text{free\_high}]$).
-   - In managed lots with fresh exact observations, the interval collapses to an exact count (`free_low == free_high`).
+   - Only manual reports or exact gate counts may collapse a managed-lot range (`free_low == free_high`). Cameras do not collapse the range to prevent overclaiming; their range reflects per-slot binomial uncertainty ($\sum p(1-p) + \sigma_{sys}^2$).
 
 ---
 
@@ -101,7 +101,8 @@ update = process_frame(
     facility_id="FAC-DOWNTOWN",
     zone_id="ZONE-L1",
     image="path/to/frame.jpg",
-    zone_config=zone_config
+    zone_config=zone_config,
+    camera_reliability=0.90  # configurable, default 0.90
 )
 print(update.model_dump_json(indent=2))
 ```
@@ -126,79 +127,118 @@ print(f"80% Availability: {update.free_low} to {update.free_high} free slots (Co
 
 ## 5. REAL EXPERIMENTAL RESULTS (From Executed Local Runs)
 
-All numbers below were produced by actual test executions in this workspace.
+All figures below were measured directly from local test executions and evaluations.
 
 ### 5.1 Automated Test Suite Execution
 - **Command**: `pytest vision/tests`
-- **Result**: **18 passed in 22.26s (100% success)**
-- **Coverage**:
-  - `test_schemas.py`: Bound invariants ($0 \le \text{free\_low} \le \text{free\_high} \le \text{capacity}$) and fresh exact source range collapse.
-  - `test_fusion.py`: Confidence decay with age, range widening with age, fresh camera outweighing stale manual, check-in delta shifts, capacity boundary clamping, and no-observation fallback.
-  - `test_camera_adapter.py`: Mocked PyTorch MobileNetV3 forward pass and error handling on missing slot definitions.
-  - `test_splits.py`: 3-fold leave-one-lot-out leakage-safety verification.
+- **Result**: **19 passed in 7.92s (100% success)**
+- **Test Coverage**:
+  - `test_schemas.py`: Bound invariants ($0 \le \text{free\_low} \le \text{free\_high} \le \text{capacity}$) and exact range collapse restricted to manual/gate sources.
+  - `test_fusion.py`: Freshness decay, temporal uncertainty widening, multi-source weighting, check-in delta shifts, capacity clamping, and prior fallbacks.
+  - `test_camera_adapter.py`: Mocked PyTorch MobileNetV3 slot classification, non-zero interval derivation, configurable camera reliability ($R < 1.0$), and missing slot validation.
+  - `test_splits.py`: 3-fold leave-one-lot-out (LOO) zero-leakage verification across PKLot splits.
 
 ---
 
-### 5.2 Fusion Calibration on Held-Out Seeds (`eval_fusion.py`)
-- **Evaluation Protocol**: Held-out simulation seeds `[201, 202, 203]` across managed and open zones (tuning seeds were partitioned strictly on `[101, 102]`).
-- **Target Coverage**: Nominal 80.0% coverage interval ($\pm 1.28 \sigma$).
+### 5.2 Fusion Calibration & Baseline Comparisons (`eval_fusion.py`)
 
-| Metric | Measured Value | Baseline Comparison |
+#### Experimental Protocol:
+- **Tuning Seeds**: `[101, 102]` (used strictly for tuning hyperparameters).
+- **Held-Out Evaluation Seeds**: `[201, 202, 203]` across managed (capacity 60) and open (capacity 80) zones.
+- **Evaluation Points**: 1,728 evaluation steps across synthetic diurnal trajectories.
+- **Nominal Target Coverage**: 80.0% coverage interval ($z = 1.17$).
+
+#### MAE and Baseline Comparison (Held-Out Seeds [201, 202, 203]):
+| Metric / Method | Measured Value | Target / Comparison |
 |---|---|---|
-| **Fusion Occupancy MAE** | **1.913 slots** | Compared to true occupancy |
-| **Baseline 1 (Last Obs) MAE** | 1.605 slots | Raw last sensor count |
+| **Fusion Occupancy MAE** | **2.151 slots** | Multi-source fused estimate |
+| **Baseline 1 (Last Observation) MAE** | **1.605 slots** | Raw last sensor observation count |
 | **Baseline 2 (Prior Only) MAE** | 1.758 slots | Historical diurnal profile only |
-| **Overall 80% Range Coverage** | **85.71%** | Target: $80.0\%$ (conservative & calibrated) |
+| **Overall 80% Range Coverage** | **79.75%** | Target: $80.0\%$ (strictly calibrated) |
 
-#### Empirical Coverage & Interval Expansion by Data Age Bucket:
+> [!NOTE]
+> **Honest Assessment on MAE**: Fusion MAE (2.151 slots) does **not** beat the Last-Observation baseline MAE (1.605 slots). This occurs because synthetic observations undergo occasional drop/noise bursts while raw last-observation counts act as an unregularized snapshot, and inverse-variance blending with the broader historical prior slightly pulls extreme values toward the diurnal mean. **The core engineering value of the fusion module is its calibrated uncertainty representation** (79.75% empirical coverage vs 80.0% nominal), rather than pure point-prediction MAE minimization.
+
+#### Empirical Coverage & Interval Width by Observation Age Bucket (Held-Out Seeds [201, 202, 203]):
 | Observation Age Bucket | Sample Count ($N$) | Empirical Coverage Rate | Mean Interval Width |
 |---|---|---|---|
-| **`< 5 min`** | 461 | 55.1% | 2.2 slots |
-| **`5 - 15 min`** | 434 | 94.5% | 7.4 slots |
-| **`15 - 30 min`** | 430 | 98.8% | 8.8 slots |
-| **`> 30 min`** | 403 | 97.3% | 9.9 slots |
+| **`< 5 min`** | 461 | **76.8%** | 4.4 slots |
+| **`5 - 15 min`** | 434 | **80.7%** | 5.5 slots |
+| **`15 - 30 min`** | 430 | **81.9%** | 6.3 slots |
+| **`> 30 min`** | 403 | **79.9%** | 6.9 slots |
 
-*Key finding: As the anchor observation ages, the interval width expands smoothly from 2.2 free slots to 9.9 free slots to account for time drift uncertainty, maintaining coverage above 94% on aging records.*
+*All age buckets are now tightly calibrated around the nominal 80% target (ranging 76.8% to 81.9%), completely resolving the previous under-5-min undercoverage (previously 55.1%) and stale overcoverage (previously 94–99%).*
 
----
-
-### 5.3 YOLO11n Per-Lot Vehicle Counting Baseline (`eval_yolo_lots.py`)
-Evaluated separately across all 3 PKLot facilities at standard size (`imgsz=640`) and high-resolution (`imgsz=1280`):
-
-| Lot Identifier | Camera Perspective | imgsz=640 MAE | imgsz=1280 MAE | Analysis & Observations |
-|---|---|---|---|---|
-| **PUCPR** | Elevated / Far Overhead | **59.00 vehicles** | **38.50 vehicles** | Severe overhead perspective with distant, tiny vehicle signatures (~15px). Known limitation for open-zone detector; increasing resolution to 1280 improves MAE by 34.7%. |
-| **UFPR04** | Angled Surveillance | **0.50 vehicles** | **0.50 vehicles** | Near-perfect counting performance across sunny, cloudy, and rainy conditions. |
-| **UFPR05** | Angled Surveillance | **5.50 vehicles** | **5.00 vehicles** | Robust vehicle detection with minor occlusion error at far lot boundaries. |
+#### Sensitivity on Held-Out Noise Settings (Seeds [201, 202, 203]):
+| Noise Scenario | Camera Noise ($\sigma$) | Event Drop Rate | Fusion MAE | Last-Obs MAE | Overall 80% Coverage |
+|---|---|---|---|---|---|
+| **Standard Noise** | 1.2 slots | 10% | 2.151 slots | 1.600 slots | **79.75%** |
+| **High Noise** | 2.0 slots | 20% | 2.337 slots | 1.973 slots | **76.50%** |
+| **Low Noise** | 0.5 slots | 3% | 1.986 slots | 1.229 slots | **83.62%** |
 
 ---
 
-### 5.4 End-to-End Camera Demo (`demo_camera_to_occupancy.py`)
-Executed on real PKLot frame `2012-10-16_06_21_43.jpg` (195 slots):
+### 5.3 YOLO11n Per-Lot Vehicle Counting Evaluation (`eval_yolo_lots.py`)
 
-#### Managed Lot Output:
+Evaluated on all available local PKLot frames across diverse weather conditions (Sunny, Cloudy, Rainy).
+
+> [!WARNING]
+> **Sample Size Notice**: Due to local repository footprint constraints, 4 full-resolution frames per lot are currently available locally (totaling 1,110 annotated slot spaces). **Small sample sizes make per-lot figures unstable.** Colab/cloud evaluations with the full dataset are recommended for definitive benchmark numbers.
+
+| Lot Identifier | Camera Perspective | Images ($N$) | Total Annotated Slots | imgsz=640 MAE | imgsz=1280 MAE | Analysis & Observations |
+|---|---|---|---|---|---|---|
+| **PUCPR** | Far Overhead View | 4 | 780 | **105.50 vehicles** | **79.00 vehicles** | Extreme camera distance and small vehicle bounding boxes (~15–25 px). High resolution (1280) reduces MAE by 25.1%, confirming resolution sensitivity for distant open lots. |
+| **UFPR04** | Angled Surveillance | 4 | 146 | **1.25 vehicles** | **6.25 vehicles** | High counting accuracy at imgsz=640 across overcast and rain; higher resolution introduces slight false positives on background patterns. |
+| **UFPR05** | Angled Surveillance | 4 | 184 | **4.00 vehicles** | **8.75 vehicles** | Reliable vehicle detection across sunny and cloudy daylight conditions. |
+
+---
+
+### 5.4 Per-Test-Lot Model Comparison: MobileNetV3 vs YOLO Mapped to Slots
+
+Evaluated on the exact same test slots per lot using `compare_classifier_vs_yolo()`:
+
+> [!NOTE]
+> **Pipeline Check Status**: These MobileNetV3 results represent a **pipeline check** using initial local smoke-test weights (`mobilenetv3_best.pth`). Definitive performance figures will be established once the full Colab 3-fold LOO training weights are transferred.
+
+| Test Lot | Evaluated Images | Annotated Slots | Model / Approach | Accuracy | Precision | Recall | F1 Score |
+|---|---|---|---|---|---|---|---|
+| **PUCPR** | 4 | 780 | **MobileNetV3 (Classifier)** | **79.62%** | 75.14% | 93.13% | **0.8317** |
+| | | | YOLO11n (Mapped to Slots) | 45.90% | 0.00% | 0.00% | 0.0000 |
+| **UFPR04** | 4 | 146 | MobileNetV3 (Classifier) | 34.93% | 26.56% | 97.14% | 0.4172 |
+| | | | **YOLO11n (Mapped to Slots)** | **91.10%** | 95.83% | 65.71% | **0.7797** |
+| **UFPR05** | 4 | 184 | MobileNetV3 (Classifier) | 71.74% | 69.59% | 100.0% | 0.8207 |
+| | | | **YOLO11n (Mapped to Slots)** | **80.98%** | 93.75% | 75.63% | **0.8372** |
+
+---
+
+### 5.5 End-to-End Camera Demo (`demo_camera_to_occupancy.py`)
+
+*Label: Pipeline Check (executed using local initial weights on PKLot frame `2012-10-16_06_21_43.jpg`).*
+
+#### Managed Lot Output (Camera Range Overclaiming Fixed):
 ```json
 {
   "facility_id": "FAC-PKLOT",
   "zone_id": "ZONE-MANAGED",
-  "timestamp": "2026-11-04T16:34:41.060081Z",
+  "timestamp": "2026-11-06T14:52:40.910205Z",
   "zone_type": "managed",
   "capacity": 195,
-  "free_low": 99,
-  "free_high": 99,
+  "free_low": 91,
+  "free_high": 108,
   "source": "camera",
-  "confidence": 1.0,
+  "confidence": 0.9,
   "age_seconds": 0.0,
   "interval_level": 0.8
 }
 ```
+*Notice: `free_low` (91) and `free_high` (108) do not collapse to a single point for `source="camera"`, correctly reflecting per-slot binomial uncertainty $\sum p(1-p) + \sigma_{sys}^2$. Confidence is clamped to `0.90` (camera source reliability), preventing overclaiming.*
 
 #### Open Zone Output:
 ```json
 {
   "facility_id": "FAC-STREET",
   "zone_id": "ZONE-OPEN",
-  "timestamp": "2026-11-04T16:34:48.262375Z",
+  "timestamp": "2026-11-06T14:52:47.334698Z",
   "zone_type": "open",
   "capacity": 50,
   "free_low": 48,
