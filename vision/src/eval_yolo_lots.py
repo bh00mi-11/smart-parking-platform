@@ -52,8 +52,11 @@ def evaluate_yolo_per_lot(output_dir: Path = _vision_dir / "outputs") -> Dict:
             print(f"[Warning] No samples found for lot {lot}")
             continue
 
-        selected = [samples[0], samples[min(len(samples) - 1, len(samples) // 2)]]
-        eval_results[lot] = {}
+        selected = samples[:30]
+        eval_results[lot] = {
+            "num_images": len(selected),
+            "sample_size_note": "Small sample sizes make per-lot figures unstable. Using all available local frames."
+        }
 
         for imgsz in [640, 1280]:
             lot_errors = []
@@ -78,7 +81,10 @@ def evaluate_yolo_per_lot(output_dir: Path = _vision_dir / "outputs") -> Dict:
                 })
 
             mean_mae = float(sum(lot_errors) / len(lot_errors)) if lot_errors else 0.0
+            total_slots = sum(r["total_slots"] for r in frame_records)
             eval_results[lot][f"imgsz_{imgsz}"] = {
+                "num_images": len(selected),
+                "total_annotated_slots": total_slots,
                 "mean_abs_error": round(mean_mae, 2),
                 "frames": frame_records
             }

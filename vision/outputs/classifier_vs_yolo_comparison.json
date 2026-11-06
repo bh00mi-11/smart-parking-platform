@@ -1,0 +1,60 @@
+{
+  "evaluation_type": "pipeline_check_classifier_vs_yolo",
+  "weights_status": "pipeline_check (tiny smoke-test weights until full Colab weights exist)",
+  "per_lot_comparison": {
+    "PUCPR": {
+      "num_images": 4,
+      "total_annotated_slots": 780,
+      "metrics": {
+        "mobilenetv3": {
+          "accuracy": 0.7962,
+          "precision": 0.7514,
+          "recall": 0.9313,
+          "f1_score": 0.8317
+        },
+        "yolo11n_mapped": {
+          "accuracy": 0.459,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1_score": 0.0
+        }
+      }
+    },
+    "UFPR04": {
+      "num_images": 4,
+      "total_annotated_slots": 146,
+      "metrics": {
+        "mobilenetv3": {
+          "accuracy": 0.3493,
+          "precision": 0.2656,
+          "recall": 0.9714,
+          "f1_score": 0.4172
+        },
+        "yolo11n_mapped": {
+          "accuracy": 0.911,
+          "precision": 0.9583,
+          "recall": 0.6571,
+          "f1_score": 0.7797
+        }
+      }
+    },
+    "UFPR05": {
+      "num_images": 4,
+      "total_annotated_slots": 184,
+      "metrics": {
+        "mobilenetv3": {
+          "accuracy": 0.7174,
+          "precision": 0.6959,
+          "recall": 1.0,
+          "f1_score": 0.8207
+        },
+        "yolo11n_mapped": {
+          "accuracy": 0.8098,
+          "precision": 0.9375,
+          "recall": 0.7563,
+          "f1_score": 0.8372
+        }
+      }
+    }
+  }
+}
