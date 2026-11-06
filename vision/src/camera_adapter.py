@@ -88,7 +88,8 @@ def process_frame(
     now: Optional[Union[datetime, str]] = None,
     fusion_cfg: Optional[FusionConfig] = None,
     classifier_model: Optional[torch.nn.Module] = None,
-    device: Union[str, torch.device] = "cpu"
+    device: Union[str, torch.device] = "cpu",
+    camera_reliability: Optional[float] = None
 ) -> OccupancyUpdate:
     """
     Processes a camera frame for a given zone and produces an OccupancyUpdate (source='camera').
@@ -160,6 +161,12 @@ def process_frame(
         "capacity": capacity,
         "zone_type": zone_type
     }
+
+    if fusion_cfg is None:
+        fusion_cfg = FusionConfig()
+    if camera_reliability is not None:
+        fusion_cfg.rel_camera_managed = min(0.999, max(0.0, float(camera_reliability)))
+        fusion_cfg.rel_camera_open = min(0.999, max(0.0, float(camera_reliability)))
 
     update = estimate_occupancy(
         zone=zone_info,
