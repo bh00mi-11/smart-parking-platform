@@ -7,6 +7,7 @@ import pytest
 
 from vision.src.splits import (
     assert_no_data_leakage,
+    make_all_lots_split,
     make_leave_one_lot_out_splits,
     make_time_based_split,
     PKLOT_LOTS
@@ -67,4 +68,22 @@ def test_time_based_split_no_leakage():
     assert len(splits["train"]) > 0
     assert len(splits["val"]) > 0
     assert len(splits["test"]) > 0
+
+
+def test_make_all_lots_split_no_leakage():
+    samples = create_dummy_sample_paths()
+    splits = make_all_lots_split(samples, val_day_ratio=0.2)
+
+    assert_no_data_leakage(splits)
+    assert len(splits["train"]) > 0
+    assert len(splits["val"]) > 0
+    assert len(splits["test"]) > 0
+    assert len(splits["val"]) == len(splits["test"])
+
+    # Verify all 3 lots are represented in train and val
+    train_lots = set(img_p.parent.parent.parent.name for img_p, _ in splits["train"])
+    val_lots = set(img_p.parent.parent.parent.name for img_p, _ in splits["val"])
+    assert train_lots == {"PUCPR", "UFPR04", "UFPR05"}
+    assert val_lots == {"PUCPR", "UFPR04", "UFPR05"}
+
 

@@ -200,9 +200,60 @@ def make_time_based_split(
     return splits
 
 
+def make_all_lots_split(
+    samples: List[Tuple[Path, Path]],
+    val_day_ratio: float = 0.2,
+    seed: int = 42
+) -> Dict[str, List[Tuple[Path, Path]]]:
+    """
+    Final model training split across ALL lots (PUCPR, UFPR04, UFPR05).
+    Training and validation are partitioned strictly by day within each lot.
+    The validation set also serves as the evaluation set for mobilenetv3_final.pth.
+    """
+    lot_days = defaultdict(set)
+    day_to_samples = defaultdict(list)
+
+    for img_p, xml_p in samples:
+        lot = img_p.parent.parent.parent.name
+        day = img_p.parent.name
+        lot_days[lot].add(day)
+        day_to_samples[(lot, day)].append((img_p, xml_p))
+
+    splits: Dict[str, List[Tuple[Path, Path]]] = {"train": [], "val": [], "test": []}
+
+    for lot in sorted(list(lot_days.keys())):
+        sorted_days = sorted(list(lot_days[lot]))
+        n_days = len(sorted_days)
+        if n_days <= 1:
+            for d in sorted_days:
+                splits["train"].extend(day_to_samples[(lot, d)])
+        else:
+            n_val = max(1, int(round(n_days * val_day_ratio)))
+            val_days = set(sorted_days[-n_val:])
+            for d in sorted_days:
+                if d in val_days:
+                    splits["val"].extend(day_to_samples[(lot, d)])
+                else:
+                    splits["train"].extend(day_to_samples[(lot, d)])
+
+    # If val is still empty (e.g. tiny subset with only 1 day total), shift 1 sample
+    if len(splits["val"]) == 0 and len(splits["train"]) > 1:
+        splits["val"].append(splits["train"].pop())
+
+    # For the final protocol, test split mirrors val split for evaluation
+    splits["test"] = list(splits["val"])
+
+    # Check leakage between train and val
+    assert_no_data_leakage({"train": splits["train"], "val": splits["val"]})
+    return splits
+
+
 def assert_no_data_leakage(splits: Dict[str, List[Tuple[Path, Path]]]):
     """
-    Asserts that no full-frame image appears in more than one split partition.
+    Asserts that no full-frame image appears in more than one split partition,
+    specifically ensuring train does not leak into val or test.
+    If 'test' is an evaluation alias of 'val' (e.g. in final model evaluation),
+    identical val/test sets are permitted.
     Raises AssertionError if leakage is detected.
     """
     image_sets: Dict[str, Set[str]] = {}
@@ -213,6 +264,9 @@ def assert_no_data_leakage(splits: Dict[str, List[Tuple[Path, Path]]]):
     for i in range(len(split_names)):
         for j in range(i + 1, len(split_names)):
             s1, s2 = split_names[i], split_names[j]
+            # Allow val and test to be identical if intended
+            if set([s1, s2]) == {"val", "test"} and image_sets[s1] == image_sets[s2]:
+                continue
             overlap = image_sets[s1].intersection(image_sets[s2])
             assert len(overlap) == 0, (
                 f"Data leakage detected between '{s1}' and '{s2}'! "

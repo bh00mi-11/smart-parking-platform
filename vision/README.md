@@ -131,16 +131,31 @@ All figures below were measured directly from local test executions and evaluati
 
 ### 5.1 Automated Test Suite Execution
 - **Command**: `pytest vision/tests`
-- **Result**: **20 passed in 10.07s (100% success)**
+- **Result**: **21 passed in 11.35s (100% success)**
 - **Test Coverage**:
   - `test_schemas.py`: Bound invariants ($0 \le \text{free\_low} \le \text{free\_high} \le \text{capacity}$) and exact range collapse restricted to manual/gate sources.
   - `test_fusion.py`: Freshness decay, temporal uncertainty widening, multi-source weighting, check-in delta shifts, capacity clamping, and prior fallbacks.
   - `test_camera_adapter.py`: Mocked PyTorch MobileNetV3 slot classification, non-zero interval derivation, configurable camera reliability ($R < 1.0$), missing slot validation, and **inference vs dataset preprocessing parity verification**.
-  - `test_splits.py`: 3-fold leave-one-lot-out (LOO) zero-leakage verification across PKLot splits.
+  - `test_splits.py`: 3-fold leave-one-lot-out (LOO) zero-leakage verification and final model all-lots split verification (`make_all_lots_split`) across PKLot splits.
 
 ---
 
-### 5.2 MobileNetV3 3-Fold Leave-One-Lot-Out (LOO) Cross-Validation
+### 5.2 Large-Scale PKLot Training & Final Production Model Architecture
+
+To scale beyond small local sets without exhausting local laptop disk space:
+1. **Sampling Strategy**: `download_data.py --official-archive --frames-per-lot 150` downloads the official PKLot archive (4.56 GB) and samples $\ge 150$ frames per lot evenly across lots (`PUCPR`, `UFPR04`, `UFPR05`), weather conditions (`Sunny`, `Cloudy`, `Rainy`), and days, using stride sampling to prevent near-identical consecutive frames.
+2. **Preprocessing Safeguards**:
+   - `colab_train.ipynb` explicitly clones `smart-parking-platform`, logs `git rev-parse HEAD`, invalidates stale caches via `rm -rf vision/data/cache/crops`, and runs the shared `preprocess_slot_crop` pipeline across training, evaluation, and inference.
+3. **Protocols**:
+   - **Leave-One-Lot-Out (LOO)** (`--protocol loo`): 3 folds for evaluating cross-facility domain transfer.
+   - **Final Production Model** (`--protocol all`): Trains `mobilenetv3_final.pth` across **all three facilities** with validation partitioned strictly by day. This model powers backend live inference and the demo pipeline.
+4. **Reproducibility Verification**:
+   - `colab_train.ipynb` exports 50 fixed test crop predictions per fold to `vision/outputs/repro_check.json`.
+   - Local script `vision/scripts/verify_repro.py` re-evaluates the downloaded fold weights on those 50 test crops locally using `preprocess_slot_crop`, asserting 100% decision and bitwise parity.
+
+---
+
+### 5.3 MobileNetV3 3-Fold Leave-One-Lot-Out (LOO) Cross-Validation (Current Local Checkpoints)
 
 The MobileNetV3-Small classifier was evaluated across the 3 PKLot facilities using a Leave-One-Lot-Out (LOO) protocol: in each fold, two facilities are used for training/validation and the remaining held-out facility is used exclusively for testing.
 
