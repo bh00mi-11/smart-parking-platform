@@ -1,0 +1,125 @@
+{
+  "mae": 36.916666666666664,
+  "results": [
+    {
+      "image": "2012-10-16_06_21_43.jpg",
+      "lot": "PUCPR",
+      "weather": "Cloudy",
+      "total_slots": 195,
+      "true_occupied": 3,
+      "predicted_count": 0,
+      "abs_error": 3,
+      "annotated_path": "outputs\\annotated_yolo\\pred_2012-10-16_06_21_43.jpg"
+    },
+    {
+      "image": "2012-10-25_19_33_54.jpg",
+      "lot": "PUCPR",
+      "weather": "Rainy",
+      "total_slots": 195,
+      "true_occupied": 188,
+      "predicted_count": 0,
+      "abs_error": 188,
+      "annotated_path": "outputs\\annotated_yolo\\pred_2012-10-25_19_33_54.jpg"
+    },
+    {
+      "image": "2012-09-11_15_16_58.jpg",
+      "lot": "PUCPR",
+      "weather": "Sunny",
+      "total_slots": 195,
+      "true_occupied": 115,
+      "predicted_count": 0,
+      "abs_error": 115,
+      "annotated_path": "outputs\\annotated_yolo\\pred_2012-09-11_15_16_58.jpg"
+    },
+    {
+      "image": "2012-09-11_15_27_08.jpg",
+      "lot": "PUCPR",
+      "weather": "Sunny",
+      "total_slots": 195,
+      "true_occupied": 116,
+      "predicted_count": 0,
+      "abs_error": 116,
+      "annotated_path": "outputs\\annotated_yolo\\pred_2012-09-11_15_27_08.jpg"
+    },
+    {
+      "image": "2012-12-22_15_55_12.jpg",
+      "lot": "UFPR04",
+      "weather": "Cloudy",
+      "total_slots": 37,
+      "true_occupied": 0,
+      "predicted_count": 0,
+      "abs_error": 0,
+      "annotated_path": "outputs\\annotated_yolo\\pred_2012-12-22_15_55_12.jpg"
+    },
+    {
+      "image": "2012-12-07_16_42_25.jpg",
+      "lot": "UFPR04",
+      "weather": "Rainy",
+      "total_slots": 37,
+      "true_occupied": 35,
+      "predicted_count": 32,
+      "abs_error": 3,
+      "annotated_path": "outputs\\annotated_yolo\\pred_2012-12-07_16_42_25.jpg"
+    },
+    {
+      "image": "2012-12-28_09_05_04.jpg",
+      "lot": "UFPR04",
+      "weather": "Rainy",
+      "total_slots": 35,
+      "true_occupied": 0,
+      "predicted_count": 1,
+      "abs_error": 1,
+      "annotated_path": "outputs\\annotated_yolo\\pred_2012-12-28_09_05_04.jpg"
+    },
+    {
+      "image": "2012-12-26_08_25_03.jpg",
+      "lot": "UFPR04",
+      "weather": "Sunny",
+      "total_slots": 37,
+      "true_occupied": 0,
+      "predicted_count": 1,
+      "abs_error": 1,
+      "annotated_path": "outputs\\annotated_yolo\\pred_2012-12-26_08_25_03.jpg"
+    },
+    {
+      "image": "2013-04-12_15_35_10.jpg",
+      "lot": "UFPR05",
+      "weather": "Cloudy",
+      "total_slots": 46,
+      "true_occupied": 45,
+      "predicted_count": 34,
+      "abs_error": 11,
+      "annotated_path": "outputs\\annotated_yolo\\pred_2013-04-12_15_35_10.jpg"
+    },
+    {
+      "image": "2013-04-14_15_30_10.jpg",
+      "lot": "UFPR05",
+      "weather": "Rainy",
+      "total_slots": 46,
+      "true_occupied": 27,
+      "predicted_count": 29,
+      "abs_error": 2,
+      "annotated_path": "outputs\\annotated_yolo\\pred_2013-04-14_15_30_10.jpg"
+    },
+    {
+      "image": "2013-02-22_06_05_00.jpg",
+      "lot": "UFPR05",
+      "weather": "Sunny",
+      "total_slots": 46,
+      "true_occupied": 2,
+      "predicted_count": 2,
+      "abs_error": 0,
+      "annotated_path": "outputs\\annotated_yolo\\pred_2013-02-22_06_05_00.jpg"
+    },
+    {
+      "image": "2013-04-16_07_45_02.jpg",
+      "lot": "UFPR05",
+      "weather": "Sunny",
+      "total_slots": 46,
+      "true_occupied": 45,
+      "predicted_count": 42,
+      "abs_error": 3,
+      "annotated_path": "outputs\\annotated_yolo\\pred_2013-04-16_07_45_02.jpg"
+    }
+  ]
+}
