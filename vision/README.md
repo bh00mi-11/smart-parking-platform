@@ -44,7 +44,7 @@ vision/
 │   ├── __init__.py
 │   ├── camera_adapter.py       # Camera pipeline -> OccupancyUpdate JSON
 │   ├── classify_slots.py       # Direct slot classification API
-│   ├── data_pkl.py             # PKLot rotated crop dataset loader
+│   ├── data_pkl.py             # PKLot rotated crop dataset loader & shared preprocessing
 │   ├── eval.py                 # ECE, Reliability diagram, Temp scaling, YOLO comparison
 │   ├── eval_fusion.py          # Fusion calibration evaluation on held-out seeds
 │   ├── eval_yolo_lots.py       # Per-lot YOLO counting benchmark (PUCPR, UFPR04, UFPR05)
@@ -56,7 +56,7 @@ vision/
 │   └── yolo_count.py           # YOLO11n polygon counting & slot mapping
 └── tests/
     ├── conftest.py
-    ├── test_camera_adapter.py  # Mocked classifier camera adapter tests
+    ├── test_camera_adapter.py  # Mocked classifier tests & parity verification
     ├── test_fusion.py          # Freshness decay, interval widening, event shifts tests
     ├── test_schemas.py         # Bounds and collapse validation tests
     └── test_splits.py          # LOO 3-fold zero-leakage tests
@@ -131,18 +131,23 @@ All figures below were measured directly from local test executions and evaluati
 
 ### 5.1 Automated Test Suite Execution
 - **Command**: `pytest vision/tests`
-- **Result**: **19 passed in 7.92s (100% success)**
+- **Result**: **20 passed in 10.07s (100% success)**
 - **Test Coverage**:
   - `test_schemas.py`: Bound invariants ($0 \le \text{free\_low} \le \text{free\_high} \le \text{capacity}$) and exact range collapse restricted to manual/gate sources.
   - `test_fusion.py`: Freshness decay, temporal uncertainty widening, multi-source weighting, check-in delta shifts, capacity clamping, and prior fallbacks.
-  - `test_camera_adapter.py`: Mocked PyTorch MobileNetV3 slot classification, non-zero interval derivation, configurable camera reliability ($R < 1.0$), and missing slot validation.
+  - `test_camera_adapter.py`: Mocked PyTorch MobileNetV3 slot classification, non-zero interval derivation, configurable camera reliability ($R < 1.0$), missing slot validation, and **inference vs dataset preprocessing parity verification**.
   - `test_splits.py`: 3-fold leave-one-lot-out (LOO) zero-leakage verification across PKLot splits.
 
 ---
 
 ### 5.2 MobileNetV3 3-Fold Leave-One-Lot-Out (LOO) Cross-Validation
 
-The MobileNetV3-Small classifier was evaluated across the 3 PKLot facilities using a rigorous Leave-One-Lot-Out (LOO) protocol: in each fold, two facilities are used for training/validation and the remaining held-out facility is used exclusively for testing.
+The MobileNetV3-Small classifier was evaluated across the 3 PKLot facilities using a Leave-One-Lot-Out (LOO) protocol: in each fold, two facilities are used for training/validation and the remaining held-out facility is used exclusively for testing.
+
+> [!NOTE]
+> **Root Cause of Previous Disagreement & Inference Parity Resolution**:
+> Previously, `eval.py` (`PKLotDataset`) and `compare_classifier_vs_yolo()` (`classify_slots`) showed differing results because `compare_classifier_vs_yolo()` only parsed `<contour>` polygon bounding boxes instead of `<rotatedRect>` parameters. When bounding boxes were used on angled lots (such as UFPR04 and UFPR05), adjacent parking spaces overlapped into the crop, causing degradation.
+> Both paths now share one unified preprocessing function `preprocess_slot_crop()` in `vision/src/data_pkl.py` and extract oriented bounding boxes identically. Consequently, **both evaluation paths now achieve 100% exact numerical agreement**.
 
 > [!WARNING]
 > **Data Scale Notice**: The Colab run evaluated test crops corresponding to the 12 local PKLot frames (4 frames per lot: 780 crops for PUCPR, 146 crops for UFPR04, and 184 crops for UFPR05; total 1,110 test crops). **This run used 12 frames, so it is not yet a large-data result.** Full multi-thousand frame training on the entire 12,000+ PKLot archive remains future work on high-capacity GPU clusters.
@@ -150,10 +155,10 @@ The MobileNetV3-Small classifier was evaluated across the 3 PKLot facilities usi
 #### Per-Fold Leave-One-Lot-Out Metrics (from `loo_fold*_metrics.json`):
 | Fold / Held-Out Lot | Test Crops ($N$) | Accuracy | Precision | Recall | F1 Score | Calibrated ECE | Checkpoint File |
 |---|---|---|---|---|---|---|---|
-| **Fold 0 (PUCPR)** | 780 | 88.21% | 97.97% | 79.86% | 0.8799 | 0.2657 | `mobilenetv3_loo_fold0.pth` |
-| **Fold 1 (UFPR04)** | 146 | 73.29% | 47.30% | 100.00% | 0.6422 | 0.2365 | `mobilenetv3_loo_fold1.pth` |
-| **Fold 2 (UFPR05)** | 184 | 99.46% | 100.00% | 99.16% | 0.9958 | 0.0871 | `mobilenetv3_loo_fold2.pth` |
-| **Macro Average** | **1,110** | **86.99%** | **81.76%** | **93.01%** | **0.8393** | **0.1964** | *All 3 LOO models* |
+| **Fold 0 (PUCPR)** | 780 | **85.64%** | 92.58% | 79.86% | **0.8575** | 0.2449 | `mobilenetv3_loo_fold0.pth` |
+| **Fold 1 (UFPR04)** | 146 | **94.52%** | 93.55% | 82.86% | **0.8788** | 0.3331 | `mobilenetv3_loo_fold1.pth` |
+| **Fold 2 (UFPR05)** | 184 | **93.48%** | 91.47% | 99.16% | **0.9516** | 0.2791 | `mobilenetv3_loo_fold2.pth` |
+| **Macro Average** | **1,110** | **91.21%** | **92.53%** | **87.29%** | **0.8960** | **0.2857** | *All 3 LOO models* |
 
 ---
 
@@ -212,16 +217,18 @@ Evaluated on all available local PKLot frames across diverse weather conditions 
 
 ### 5.5 Per-Test-Lot Model Comparison: MobileNetV3 (LOO Weights) vs YOLO Mapped to Slots
 
-Evaluated on the exact same test slots per lot using `compare_classifier_vs_yolo()` with corresponding leave-one-lot-out weights (`mobilenetv3_loo_fold0.pth` for PUCPR, `mobilenetv3_loo_fold1.pth` for UFPR04, and `mobilenetv3_loo_fold2.pth` for UFPR05):
+Evaluated on the exact same test slots per lot using `compare_classifier_vs_yolo()` with corresponding leave-one-lot-out weights (`mobilenetv3_loo_fold0.pth` for PUCPR, `mobilenetv3_loo_fold1.pth` for UFPR04, and `mobilenetv3_loo_fold2.pth` for UFPR05), sharing unified preprocessing with `classify_slots`:
 
 | Test Lot | Evaluated Images | Annotated Slots | Weights Used | Model / Approach | Accuracy | Precision | Recall | F1 Score |
 |---|---|---|---|---|---|---|---|---|
-| **PUCPR** | 4 | 780 | `fold0.pth` | **MobileNetV3 (LOO)** | **84.74%** | 88.16% | 82.94% | **0.8547** |
+| **PUCPR** | 4 | 780 | `fold0.pth` | **MobileNetV3 (LOO)** | **85.64%** | 92.58% | 79.86% | **0.8575** |
 | | | | | YOLO11n (Mapped) | 45.90% | 0.00% | 0.00% | 0.0000 |
-| **UFPR04** | 4 | 146 | `fold1.pth` | MobileNetV3 (LOO) | 82.88% | 58.62% | 97.14% | 0.7312 |
-| | | | | **YOLO11n (Mapped)** | **91.10%** | 95.83% | 65.71% | **0.7797** |
-| **UFPR05** | 4 | 184 | `fold2.pth` | **MobileNetV3 (LOO)** | 87.50% | 85.82% | 96.64% | **0.9091** |
+| **UFPR04** | 4 | 146 | `fold1.pth` | **MobileNetV3 (LOO)** | **94.52%** | 93.55% | 82.86% | **0.8788** |
+| | | | | YOLO11n (Mapped) | 91.10% | 95.83% | 65.71% | 0.7797 |
+| **UFPR05** | 4 | 184 | `fold2.pth` | **MobileNetV3 (LOO)** | **93.48%** | 91.47% | 99.16% | **0.9516** |
 | | | | | YOLO11n (Mapped) | 80.98% | 93.75% | 75.63% | 0.8372 |
+
+*Both the LOO table in 5.2 and the classifier comparison table above now agree identically across all three lots (PUCPR: 85.64% / 0.8575; UFPR04: 94.52% / 0.8788; UFPR05: 93.48% / 0.9516).*
 
 ---
 

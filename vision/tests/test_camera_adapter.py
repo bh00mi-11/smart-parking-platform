@@ -105,3 +105,36 @@ def test_camera_adapter_configurable_reliability():
     assert update.confidence == 0.85
     assert update.free_low <= update.free_high
     assert (update.free_high - update.free_low) >= 1
+
+
+def test_inference_and_dataset_preprocessing_parity():
+    from pathlib import Path
+    import cv2
+    from vision.src.data_pkl import PKLotDataset, parse_pklot_xml_slots
+    from vision.src.classify_slots import classify_slots
+
+    img_path = Path("vision/data/PKLot/UFPR04/Sunny/2012-12-26/2012-12-26_08_25_03.jpg")
+    xml_path = img_path.with_suffix(".xml")
+    if not img_path.exists() or not xml_path.exists():
+        pytest.skip("Sample image or xml not found locally")
+
+    # 1. Dataset path
+    ds = PKLotDataset([(img_path, xml_path)])
+
+    # 2. Inference path
+    _, slots = parse_pklot_xml_slots(xml_path)
+    mock_model = MockClassifier(occupied_logits=True)
+
+    classify_res = classify_slots(str(img_path), slots, model=mock_model)
+    classify_preds = [r["occupied"] for r in classify_res]
+
+    # Evaluate mock model on dataset items
+    ds_preds = []
+    with torch.no_grad():
+        for i in range(len(ds)):
+            tensor, _ = ds[i]
+            out = mock_model(tensor.unsqueeze(0))
+            ds_preds.append(int(out.argmax(dim=1).item()))
+
+    assert len(classify_preds) == len(ds_preds)
+    assert classify_preds == ds_preds

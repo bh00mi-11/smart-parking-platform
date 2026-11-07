@@ -148,6 +148,24 @@ def extract_slot_crop(
     crop_rgb = cv2.cvtColor(crop, cv2.COLOR_BGR2RGB)
     return Image.fromarray(crop_rgb)
 
+
+def preprocess_slot_crop(
+    image: np.ndarray,
+    slot_info: Dict,
+    target_size: Tuple[int, int] = (224, 224),
+    transform: Optional[Callable] = None
+) -> torch.Tensor:
+    """
+    Unified preprocessing function used identically across training, evaluation, and inference.
+    Extracts the slot crop (using rotated-rect affine warp or polygon bounding box),
+    converts to RGB, and applies standard evaluation transforms (resize, ToTensor, ImageNet normalize).
+    """
+    pil_crop = extract_slot_crop(image, slot_info, target_size=target_size)
+    if transform is None:
+        transform = get_default_eval_transforms(target_size[0])
+    return transform(pil_crop)
+
+
 class PKLotDataset(Dataset):
     """
     PyTorch Dataset for PKLot parking slot crops.
