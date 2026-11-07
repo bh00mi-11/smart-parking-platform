@@ -75,7 +75,7 @@ pip install -r vision/requirements.txt
 The camera adapter and evaluation look for the trained weights checkpoint in order:
 1. Custom path passed directly to function.
 2. `MOBILENETV3_WEIGHTS_PATH` environment variable.
-3. `vision/outputs/mobilenetv3_best.pth` or `vision/outputs/mobilenetv3_loo_fold0.pth`.
+3. `vision/outputs/mobilenetv3_loo_fold*.pth` or `vision/outputs/mobilenetv3_best.pth`.
 
 *Note: Model weights (`*.pth`, `*.pt`) and dataset archives over 50 MB are strictly gitignored.*
 
@@ -140,7 +140,24 @@ All figures below were measured directly from local test executions and evaluati
 
 ---
 
-### 5.2 Fusion Calibration & Baseline Comparisons (`eval_fusion.py`)
+### 5.2 MobileNetV3 3-Fold Leave-One-Lot-Out (LOO) Cross-Validation
+
+The MobileNetV3-Small classifier was evaluated across the 3 PKLot facilities using a rigorous Leave-One-Lot-Out (LOO) protocol: in each fold, two facilities are used for training/validation and the remaining held-out facility is used exclusively for testing.
+
+> [!WARNING]
+> **Data Scale Notice**: The Colab run evaluated test crops corresponding to the 12 local PKLot frames (4 frames per lot: 780 crops for PUCPR, 146 crops for UFPR04, and 184 crops for UFPR05; total 1,110 test crops). **This run used 12 frames, so it is not yet a large-data result.** Full multi-thousand frame training on the entire 12,000+ PKLot archive remains future work on high-capacity GPU clusters.
+
+#### Per-Fold Leave-One-Lot-Out Metrics (from `loo_fold*_metrics.json`):
+| Fold / Held-Out Lot | Test Crops ($N$) | Accuracy | Precision | Recall | F1 Score | Calibrated ECE | Checkpoint File |
+|---|---|---|---|---|---|---|---|
+| **Fold 0 (PUCPR)** | 780 | 88.21% | 97.97% | 79.86% | 0.8799 | 0.2657 | `mobilenetv3_loo_fold0.pth` |
+| **Fold 1 (UFPR04)** | 146 | 73.29% | 47.30% | 100.00% | 0.6422 | 0.2365 | `mobilenetv3_loo_fold1.pth` |
+| **Fold 2 (UFPR05)** | 184 | 99.46% | 100.00% | 99.16% | 0.9958 | 0.0871 | `mobilenetv3_loo_fold2.pth` |
+| **Macro Average** | **1,110** | **86.99%** | **81.76%** | **93.01%** | **0.8393** | **0.1964** | *All 3 LOO models* |
+
+---
+
+### 5.3 Fusion Calibration & Baseline Comparisons (`eval_fusion.py`)
 
 #### Experimental Protocol:
 - **Tuning Seeds**: `[101, 102]` (used strictly for tuning hyperparameters).
@@ -167,7 +184,7 @@ All figures below were measured directly from local test executions and evaluati
 | **`15 - 30 min`** | 430 | **81.9%** | 6.3 slots |
 | **`> 30 min`** | 403 | **79.9%** | 6.9 slots |
 
-*All age buckets are now tightly calibrated around the nominal 80% target (ranging 76.8% to 81.9%), completely resolving the previous under-5-min undercoverage (previously 55.1%) and stale overcoverage (previously 94–99%).*
+*All age buckets are tightly calibrated around the nominal 80% target (ranging 76.8% to 81.9%), completely resolving the previous under-5-min undercoverage (previously 55.1%) and stale overcoverage (previously 94–99%).*
 
 #### Sensitivity on Held-Out Noise Settings (Seeds [201, 202, 203]):
 | Noise Scenario | Camera Noise ($\sigma$) | Event Drop Rate | Fusion MAE | Last-Obs MAE | Overall 80% Coverage |
@@ -178,7 +195,7 @@ All figures below were measured directly from local test executions and evaluati
 
 ---
 
-### 5.3 YOLO11n Per-Lot Vehicle Counting Evaluation (`eval_yolo_lots.py`)
+### 5.4 YOLO11n Per-Lot Vehicle Counting Evaluation (`eval_yolo_lots.py`)
 
 Evaluated on all available local PKLot frames across diverse weather conditions (Sunny, Cloudy, Rainy).
 
@@ -193,27 +210,24 @@ Evaluated on all available local PKLot frames across diverse weather conditions 
 
 ---
 
-### 5.4 Per-Test-Lot Model Comparison: MobileNetV3 vs YOLO Mapped to Slots
+### 5.5 Per-Test-Lot Model Comparison: MobileNetV3 (LOO Weights) vs YOLO Mapped to Slots
 
-Evaluated on the exact same test slots per lot using `compare_classifier_vs_yolo()`:
+Evaluated on the exact same test slots per lot using `compare_classifier_vs_yolo()` with corresponding leave-one-lot-out weights (`mobilenetv3_loo_fold0.pth` for PUCPR, `mobilenetv3_loo_fold1.pth` for UFPR04, and `mobilenetv3_loo_fold2.pth` for UFPR05):
 
-> [!NOTE]
-> **Pipeline Check Status**: These MobileNetV3 results represent a **pipeline check** using initial local smoke-test weights (`mobilenetv3_best.pth`). Definitive performance figures will be established once the full Colab 3-fold LOO training weights are transferred.
-
-| Test Lot | Evaluated Images | Annotated Slots | Model / Approach | Accuracy | Precision | Recall | F1 Score |
-|---|---|---|---|---|---|---|---|
-| **PUCPR** | 4 | 780 | **MobileNetV3 (Classifier)** | **79.62%** | 75.14% | 93.13% | **0.8317** |
-| | | | YOLO11n (Mapped to Slots) | 45.90% | 0.00% | 0.00% | 0.0000 |
-| **UFPR04** | 4 | 146 | MobileNetV3 (Classifier) | 34.93% | 26.56% | 97.14% | 0.4172 |
-| | | | **YOLO11n (Mapped to Slots)** | **91.10%** | 95.83% | 65.71% | **0.7797** |
-| **UFPR05** | 4 | 184 | MobileNetV3 (Classifier) | 71.74% | 69.59% | 100.0% | 0.8207 |
-| | | | **YOLO11n (Mapped to Slots)** | **80.98%** | 93.75% | 75.63% | **0.8372** |
+| Test Lot | Evaluated Images | Annotated Slots | Weights Used | Model / Approach | Accuracy | Precision | Recall | F1 Score |
+|---|---|---|---|---|---|---|---|---|
+| **PUCPR** | 4 | 780 | `fold0.pth` | **MobileNetV3 (LOO)** | **84.74%** | 88.16% | 82.94% | **0.8547** |
+| | | | | YOLO11n (Mapped) | 45.90% | 0.00% | 0.00% | 0.0000 |
+| **UFPR04** | 4 | 146 | `fold1.pth` | MobileNetV3 (LOO) | 82.88% | 58.62% | 97.14% | 0.7312 |
+| | | | | **YOLO11n (Mapped)** | **91.10%** | 95.83% | 65.71% | **0.7797** |
+| **UFPR05** | 4 | 184 | `fold2.pth` | **MobileNetV3 (LOO)** | 87.50% | 85.82% | 96.64% | **0.9091** |
+| | | | | YOLO11n (Mapped) | 80.98% | 93.75% | 75.63% | 0.8372 |
 
 ---
 
-### 5.5 End-to-End Camera Demo (`demo_camera_to_occupancy.py`)
+### 5.6 End-to-End Camera Demo (`demo_camera_to_occupancy.py`)
 
-*Label: Pipeline Check (executed using local initial weights on PKLot frame `2012-10-16_06_21_43.jpg`).*
+*Label: Pipeline Check (executed on PKLot frame `2012-10-16_06_21_43.jpg`).*
 
 #### Managed Lot Output (Camera Range Overclaiming Fixed):
 ```json
