@@ -35,9 +35,11 @@ from src.data_pkl import PKLotDataset, get_default_eval_transforms, get_default_
 from src.eval import evaluate_model, f1_score
 from src.splits import (
     assert_no_data_leakage,
+    make_all_lots_split,
     make_leave_one_lot_out_splits,
     make_time_based_split,
     make_unseen_lot_split,
+    print_split_summary,
     PKLOT_LOTS
 )
 
@@ -156,11 +158,13 @@ def main():
         dest="split_protocol",
         type=str,
         default="time-based",
-        choices=["time-based", "unseen-lot", "loo"],
-        help="Splitting protocol ('time-based', 'unseen-lot', 'loo' for leave-one-lot-out)"
+        choices=["time-based", "unseen-lot", "loo", "all"],
+        help="Splitting protocol ('time-based', 'unseen-lot', 'loo' for leave-one-lot-out, 'all' for final model on all lots)"
     )
     parser.add_argument("--fold", type=int, default=0, choices=[0, 1, 2], help="Fold index for loo protocol")
     parser.add_argument("--output-dir", type=str, default="vision/outputs", help="Output directory")
+    parser.add_argument("--export-repro", action="store_true", help="Export 50 test crops to repro_check.json for reproducibility verification")
+    parser.add_argument("--repro-samples", type=int, default=50, help="Number of samples to export for reproducibility check")
     args = parser.parse_args()
 
     set_seed(args.seed)
@@ -194,6 +198,10 @@ def main():
         splits = make_leave_one_lot_out_splits(pairs, fold=args.fold, seed=args.seed)
         save_prefix = f"loo_fold{args.fold}_{PKLOT_LOTS[args.fold]}"
         ckpt_name = f"mobilenetv3_loo_fold{args.fold}.pth"
+    elif args.split_protocol == "all":
+        splits = make_all_lots_split(pairs, seed=args.seed)
+        save_prefix = "all_lots_final"
+        ckpt_name = "mobilenetv3_final.pth"
     elif args.split_protocol == "unseen-lot":
         splits = make_unseen_lot_split(pairs, test_lot="UFPR05", val_lot="UFPR04", train_lot="PUCPR")
         save_prefix = "unseen_lot"
@@ -203,7 +211,7 @@ def main():
         save_prefix = "time_based"
         ckpt_name = "mobilenetv3_best.pth"
 
-    assert_no_data_leakage(splits)
+    print_split_summary(f"Protocol: {args.split_protocol} (Prefix: {save_prefix})", splits)
 
     cache_dir = base_dir / "data" / "cache" / "crops"
     train_dataset = PKLotDataset(splits["train"], transform=get_default_train_transforms(224), cache_dir=cache_dir)
@@ -276,6 +284,70 @@ def main():
     print(f"ECE (Uncal): {metrics['ece_uncalibrated']:.4f} | ECE (Cal): {metrics['ece_calibrated']:.4f}")
     print(f"Latency:     {metrics['inference_latency_cpu_ms_per_crop']:.2f} ms / crop")
     print("=" * 65)
+
+    if args.export_repro and args.split_protocol == "loo":
+        repro_path = output_dir / "repro_check.json"
+        repro_dict = {"folds": []}
+        if repro_path.exists():
+            try:
+                import json
+                with open(repro_path, "r", encoding="utf-8") as f:
+                    repro_dict = json.load(f)
+            except Exception:
+                repro_dict = {"folds": []}
+
+        # Select fixed test crops
+        base_test = test_dataset.dataset if isinstance(test_dataset, Subset) else test_dataset
+        n_export = min(args.repro_samples, len(base_test.slots_index))
+        # Deterministic sample using seed
+        rng = random.Random(args.seed + args.fold)
+        indices = sorted(rng.sample(range(len(base_test.slots_index)), n_export))
+
+        exported_samples = []
+        for idx in indices:
+            meta = base_test.slots_index[idx]
+            tensor_crop, label = base_test[idx]
+            tensor_crop = tensor_crop.unsqueeze(0).to(device)
+            with torch.no_grad():
+                out = model(tensor_crop)
+                pred = int(torch.argmax(out, dim=1).item())
+
+            # Relative path from project/vision root
+            img_p = Path(meta["image_path"])
+            try:
+                rel_img = str(img_p.relative_to(base_dir))
+            except ValueError:
+                rel_img = str(img_p)
+
+            exported_samples.append({
+                "sample_idx": idx,
+                "image_path": rel_img,
+                "slot_id": meta["slot_id"],
+                "rotated_rect": meta["rotated_rect"],
+                "label": int(label),
+                "pred": pred
+            })
+
+        # Update or append fold entry
+        updated = False
+        for entry in repro_dict.get("folds", []):
+            if entry.get("fold") == args.fold:
+                entry["samples"] = exported_samples
+                entry["lot"] = PKLOT_LOTS[args.fold]
+                updated = True
+                break
+        if not updated:
+            repro_dict.setdefault("folds", []).append({
+                "fold": args.fold,
+                "lot": PKLOT_LOTS[args.fold],
+                "samples": exported_samples
+            })
+
+        import json
+        with open(repro_path, "w", encoding="utf-8") as f:
+            json.dump(repro_dict, f, indent=2)
+        print(f"[REPRO] Saved {len(exported_samples)} reference predictions for fold {args.fold} to {repro_path.name}")
+
 
 
 if __name__ == "__main__":

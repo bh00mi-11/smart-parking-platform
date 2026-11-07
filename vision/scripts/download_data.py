@@ -16,10 +16,14 @@ import lzma
 import tarfile
 import zipfile
 import json
+import argparse
+from collections import defaultdict
 import xml.etree.ElementTree as ET
 from pathlib import Path
 import requests
 from tqdm import tqdm
+
+PKLOT_OFFICIAL_URL = "https://www.inf.ufpr.br/vri/databases/PKLot.tar.gz"
 
 CNRPARK_PATCHES_URL = "https://github.com/fabiocarrara/deep-parking/releases/download/archive/CNRPark-Patches-150x150.zip"
 SPLITS_URL = "https://github.com/fabiocarrara/deep-parking/releases/download/archive/splits.zip"
@@ -189,16 +193,127 @@ def setup_pklot_full_frames(data_dir: Path):
         else:
             print(f"[PKLot] Warning: No spot annotation found for {fname}")
 
+def download_and_extract_pklot_archive(
+    data_dir: Path,
+    frames_per_lot: int = 150,
+    stride_sampling: bool = True
+):
+    """
+    Downloads the official PKLot.tar.gz archive (4.56 GB) and extracts a stratified,
+    evenly sampled subset of frames across lots (PUCPR, UFPR04, UFPR05), weathers,
+    and days using stride sampling to prevent identical consecutive frames.
+    """
+    pklot_dir = data_dir / "PKLot"
+    pklot_dir.mkdir(parents=True, exist_ok=True)
+    archive_path = data_dir / "PKLot.tar.gz"
+
+    print("=" * 65)
+    print("PKLot Official Archive Downloader & Sampler")
+    print(f"Target frames per lot: {frames_per_lot} (Stride sampling: {stride_sampling})")
+    print("=" * 65)
+
+    download_file(PKLOT_OFFICIAL_URL, archive_path, "PKLot Official Archive (4.56 GB)")
+
+    print(f"[PKLot] Indexing archive members in {archive_path.name}...")
+    # Map (lot, weather, day) -> list of base image member paths
+    groups = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+
+    with tarfile.open(archive_path, "r:gz") as tar:
+        for member in tar.getmembers():
+            if member.name.endswith(".jpg"):
+                # Format: PKLot/PKLot/{Lot}/{Weather}/{Day}/{Image}.jpg
+                p = Path(member.name)
+                parts = p.parts
+                # Find where PUCPR/UFPR04/UFPR05 occurs
+                lot = None
+                for candidate in ["PUCPR", "UFPR04", "UFPR05"]:
+                    if candidate in parts:
+                        lot = candidate
+                        break
+                if lot is not None:
+                    idx = parts.index(lot)
+                    if len(parts) >= idx + 4:
+                        weather = parts[idx + 1]
+                        day = parts[idx + 2]
+                        fname = parts[idx + 3]
+                        groups[lot][(weather, day)].append(member.name)
+
+        # For each lot, sample frames evenly across available weather/day combinations
+        selected_members = set()
+        for lot, day_groups in groups.items():
+            all_lot_members = []
+            # Sort each day's images temporally
+            for w_d in sorted(day_groups.keys()):
+                day_groups[w_d].sort()
+                all_lot_members.append(day_groups[w_d])
+
+            total_lot_frames = sum(len(lst) for lst in all_lot_members)
+            target = min(frames_per_lot, total_lot_frames)
+
+            # Stride sampling across days
+            lot_chosen = []
+            if stride_sampling and total_lot_frames > target:
+                stride = max(1, total_lot_frames // target)
+                flat_ordered = []
+                for lst in all_lot_members:
+                    flat_ordered.extend(lst)
+                for i in range(0, len(flat_ordered), stride):
+                    lot_chosen.append(flat_ordered[i])
+                    if len(lot_chosen) >= target:
+                        break
+            else:
+                flat_ordered = []
+                for lst in all_lot_members:
+                    flat_ordered.extend(lst)
+                lot_chosen = flat_ordered[:target]
+
+            print(f"[PKLot] Lot {lot}: Selected {len(lot_chosen)} / {total_lot_frames} frames across {len(day_groups)} weather-days.")
+            for m_name in lot_chosen:
+                selected_members.add(m_name)
+                # Also include XML
+                selected_members.add(m_name.replace(".jpg", ".xml"))
+
+        print(f"[PKLot] Extracting {len(selected_members)} selected image/XML files to {pklot_dir}...")
+        for member in tqdm(tar.getmembers(), desc="Extracting sampled PKLot"):
+            if member.name in selected_members:
+                # Strip leading PKLot/PKLot if needed so target is PKLot/{Lot}/{Weather}/{Day}/{File}
+                p = Path(member.name)
+                parts = p.parts
+                for candidate in ["PUCPR", "UFPR04", "UFPR05"]:
+                    if candidate in parts:
+                        idx = parts.index(candidate)
+                        rel_path = Path(*parts[idx:])
+                        out_target = pklot_dir / rel_path
+                        out_target.parent.mkdir(parents=True, exist_ok=True)
+                        f_in = tar.extractfile(member)
+                        if f_in is not None:
+                            with open(out_target, "wb") as f_out:
+                                f_out.write(f_in.read())
+                        break
+
+    print(f"[PKLot] Successfully extracted sampled PKLot to {pklot_dir}")
+
+
 def main():
+    parser = argparse.ArgumentParser(description="Download and setup parking datasets")
+    parser.add_argument("--official-archive", action="store_true", help="Download and sample official PKLot.tar.gz archive (for Colab)")
+    parser.add_argument("--frames-per-lot", type=int, default=150, help="Frames to sample per lot from official PKLot archive")
+    args = parser.parse_args()
+
     root = Path(__file__).resolve().parent.parent
     data_dir = root / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    print("=== TASK 1: Downloading & Setting up Datasets ===")
-    setup_metapklot_annotations(data_dir)
-    setup_pklot_full_frames(data_dir)
-    setup_cnrpark(data_dir)
-    setup_splits(data_dir)
+    if args.official_archive:
+        print("=== Official PKLot Archive Download & Sampling Mode ===")
+        download_and_extract_pklot_archive(data_dir, frames_per_lot=args.frames_per_lot, stride_sampling=True)
+    else:
+        print("=== Lightweight Sample Mode (Local Development) ===")
+        setup_metapklot_annotations(data_dir)
+        setup_pklot_full_frames(data_dir)
+        setup_cnrpark(data_dir)
+        setup_splits(data_dir)
+
     print("=== Dataset setup successfully completed ===")
 
 if __name__ == "__main__":
