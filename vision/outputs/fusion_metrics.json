@@ -7,30 +7,30 @@
   ],
   "total_eval_points": 1728,
   "metrics": {
-    "fusion_mae": 1.913,
+    "fusion_mae": 2.151,
     "baseline_last_obs_mae": 1.605,
     "baseline_prior_mae": 1.758,
-    "overall_80pct_coverage": 0.8571,
+    "overall_80pct_coverage": 0.7975,
     "coverage_by_age_bucket": {
       "<5min": {
         "sample_count": 461,
-        "coverage_rate": 0.551,
-        "mean_interval_width": 2.16
+        "coverage_rate": 0.7679,
+        "mean_interval_width": 4.41
       },
       "5-15min": {
         "sample_count": 434,
-        "coverage_rate": 0.9447,
-        "mean_interval_width": 7.4
+        "coverage_rate": 0.8065,
+        "mean_interval_width": 5.53
       },
       "15-30min": {
         "sample_count": 430,
-        "coverage_rate": 0.9884,
-        "mean_interval_width": 8.75
+        "coverage_rate": 0.8186,
+        "mean_interval_width": 6.28
       },
       ">30min": {
         "sample_count": 403,
-        "coverage_rate": 0.9727,
-        "mean_interval_width": 9.87
+        "coverage_rate": 0.799,
+        "mean_interval_width": 6.87
       }
     }
   }

@@ -1,0 +1,28 @@
+{
+  "test_crops_count": 146,
+  "accuracy": 0.7329,
+  "precision": 0.473,
+  "recall": 1.0,
+  "f1_score": 0.6422,
+  "ece_uncalibrated": 0.206,
+  "ece_calibrated": 0.2365,
+  "fitted_temperature": 1.667,
+  "confusion_matrix": {
+    "labels": [
+      "Free (0)",
+      "Occupied (1)"
+    ],
+    "matrix": [
+      [
+        72,
+        39
+      ],
+      [
+        0,
+        35
+      ]
+    ]
+  },
+  "inference_latency_cpu_ms_per_crop": 0.48,
+  "throughput_crops_per_sec": 2070.1
+}

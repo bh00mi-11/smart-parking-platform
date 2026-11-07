@@ -64,8 +64,8 @@ def test_process_frame_managed_mock_classifier():
     assert update.source == "camera"
     # All 3 slots detected as occupied -> free_low == free_high == 0
     assert update.free_low == 0
-    assert update.free_high == 0
-    assert update.confidence == 1.0
+    assert update.free_high == 1
+    assert update.confidence == 0.90
 
 
 def test_process_frame_missing_slots_managed_error():
@@ -84,3 +84,24 @@ def test_process_frame_missing_slots_managed_error():
             zone_config=zone_config
         )
 
+
+
+def test_camera_adapter_configurable_reliability():
+    dummy_frame = np.zeros((100, 100, 3), dtype=np.uint8)
+    slots = [
+        {"slot_id": "S1", "points": [[10, 10], [40, 10], [40, 40], [10, 40]]},
+        {"slot_id": "S2", "points": [[50, 10], [80, 10], [80, 40], [50, 40]]},
+    ]
+    zone_config = {"zone_type": "managed", "capacity": 2, "slots": slots}
+    mock_model = MockClassifier(occupied_logits=True)
+    update = process_frame(
+        facility_id="FAC-TEST",
+        zone_id="ZONE-M",
+        image=dummy_frame,
+        zone_config=zone_config,
+        classifier_model=mock_model,
+        camera_reliability=0.85
+    )
+    assert update.confidence == 0.85
+    assert update.free_low <= update.free_high
+    assert (update.free_high - update.free_low) >= 1

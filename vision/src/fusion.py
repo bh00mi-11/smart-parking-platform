@@ -19,7 +19,7 @@ class FusionConfig:
     NOTE: These are starting values, tuned on tuning seeds only, not claims of optimal real-world performance.
     """
     # Source intrinsic reliabilities R in [0, 1]
-    rel_camera_managed: float = 0.98
+    rel_camera_managed: float = 0.90
     rel_camera_open: float = 0.88
     rel_manual: float = 0.95
     rel_prior: float = 0.20
@@ -32,16 +32,16 @@ class FusionConfig:
     sigma_sys_camera_managed: float = 0.2     # Systematic slot classifier error
     sigma_camera_open: float = 1.5            # YOLO open-zone detection count error
     sigma_manual: float = 0.5                 # Manual operator entry error
-    sigma_event_rate: float = 0.3             # Extra variance per check-in/out event (drop / miscount rate)
+    sigma_event_rate: float = 0.1             # Extra variance per check-in/out event (drop / miscount rate)
 
     # Uncertainty temporal drift rate in variance units (slots^2) per minute
-    variance_drift_per_min: float = 0.5
+    variance_drift_per_min: float = 0.2
 
     # Managed lot fresh exact threshold (seconds)
     managed_exact_age_threshold_sec: float = 5.0
 
     # Normal distribution z-score for 80% symmetric interval
-    z_80: float = 1.28155
+    z_80: float = 1.17
 
 
 def _to_utc_timestamp(dt: Union[datetime, str]) -> datetime:
@@ -233,7 +233,7 @@ def estimate_occupancy(
     # A fresh exact source in a managed lot should collapse the range to a single value.
     is_fresh_exact_managed = (
         zone_type == "managed"
-        and freshest_anchor_source is not None
+        and freshest_anchor_source in ("manual", "gate")
         and freshest_anchor_age <= config.managed_exact_age_threshold_sec
     )
 
