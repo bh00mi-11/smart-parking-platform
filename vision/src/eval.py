@@ -323,17 +323,12 @@ def compare_classifier_vs_yolo(
         tree = ET.parse(xml_p)
         root = tree.getroot()
 
-        slots = []
-        for space in root.findall("space"):
-            s_id = space.get("id", "0")
-            occ = int(space.get("occupied", 0))
-            pts = []
-            contour = space.find("contour")
-            if contour is not None:
-                for pt in contour.findall("point"):
-                    pts.append([float(pt.get("x")), float(pt.get("y"))])
-            slots.append({"slot_id": s_id, "occupied": occ, "points": pts})
-            y_true.append(occ)
+        from .data_pkl import parse_pklot_xml_slots
+        _, slots = parse_pklot_xml_slots(xml_p)
+        for s in slots:
+            if "points" not in s and "contour" in s:
+                s["points"] = [[float(p[0]), float(p[1])] for p in s["contour"]]
+            y_true.append(s["occupied"])
 
         # 1. Classifier predictions
         cls_res = classify_slots(str(img_p), slots, model=classifier_model, device=device)
