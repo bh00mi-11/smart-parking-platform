@@ -1,0 +1,2122 @@
+{
+  "folds": [
+    {
+      "fold": 0,
+      "lot": "PUCPR",
+      "samples": [
+        {
+          "sample_idx": 106,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-09-12/2012-09-12_08_36_50.jpg",
+          "slot_id": "7",
+          "rotated_rect": {
+            "cx": 517.0,
+            "cy": 208.0,
+            "w": 43.0,
+            "h": 30.0,
+            "angle": -83.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 409,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-09-16/2012-10-16_12_03_37.jpg",
+          "slot_id": "10",
+          "rotated_rect": {
+            "cx": 615.0,
+            "cy": 208.0,
+            "w": 44.0,
+            "h": 32.0,
+            "angle": -85.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 434,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-09-16/2012-10-16_12_03_37.jpg",
+          "slot_id": "35",
+          "rotated_rect": {
+            "cx": 709.0,
+            "cy": 285.0,
+            "w": 49.0,
+            "h": 37.0,
+            "angle": -86.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 488,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-09-16/2012-10-16_12_03_37.jpg",
+          "slot_id": "89",
+          "rotated_rect": {
+            "cx": 75.0,
+            "cy": 530.0,
+            "w": 75.0,
+            "h": 36.0,
+            "angle": -61.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 520,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-09-16/2012-10-16_14_33_45.jpg",
+          "slot_id": "21",
+          "rotated_rect": {
+            "cx": 1007.0,
+            "cy": 199.0,
+            "w": 34.0,
+            "h": 43.0,
+            "angle": -7.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 1424,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-10-12/2012-10-12_12_07_45.jpg",
+          "slot_id": "25",
+          "rotated_rect": {
+            "cx": 319.0,
+            "cy": 286.0,
+            "w": 49.0,
+            "h": 35.0,
+            "angle": -72.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1535,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-10-12/2012-10-12_14_37_52.jpg",
+          "slot_id": "36",
+          "rotated_rect": {
+            "cx": 746.0,
+            "cy": 285.0,
+            "w": 43.0,
+            "h": 37.0,
+            "angle": -88.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1679,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-10-12/2012-10-12_17_07_58.jpg",
+          "slot_id": "80",
+          "rotated_rect": {
+            "cx": 741.0,
+            "cy": 447.0,
+            "w": 43.0,
+            "h": 61.0,
+            "angle": -2.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1824,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-10-13/2012-10-13_09_13_42.jpg",
+          "slot_id": "25",
+          "rotated_rect": {
+            "cx": 319.0,
+            "cy": 286.0,
+            "w": 49.0,
+            "h": 35.0,
+            "angle": -72.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 2286,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-10-14/2012-10-14_06_39_37.jpg",
+          "slot_id": "87",
+          "rotated_rect": {
+            "cx": 1071.0,
+            "cy": 451.0,
+            "w": 40.0,
+            "h": 68.0,
+            "angle": -11.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 2547,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-10-14/2012-10-14_14_04_57.jpg",
+          "slot_id": "48",
+          "rotated_rect": {
+            "cx": 333.0,
+            "cy": 336.0,
+            "w": 67.0,
+            "h": 37.0,
+            "angle": -76.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 2615,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-10-14/2012-10-14_16_35_03.jpg",
+          "slot_id": "16",
+          "rotated_rect": {
+            "cx": 824.0,
+            "cy": 202.0,
+            "w": 32.0,
+            "h": 40.0,
+            "angle": -3.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3257,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-10-31/2012-10-31_06_27_59.jpg",
+          "slot_id": "58",
+          "rotated_rect": {
+            "cx": 746.0,
+            "cy": 336.0,
+            "w": 48.0,
+            "h": 39.0,
+            "angle": -86.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3527,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-10-31/2012-10-31_13_53_19.jpg",
+          "slot_id": "28",
+          "rotated_rect": {
+            "cx": 448.0,
+            "cy": 287.0,
+            "w": 41.0,
+            "h": 39.0,
+            "angle": -82.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 3582,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-10-31/2012-10-31_13_53_19.jpg",
+          "slot_id": "83",
+          "rotated_rect": {
+            "cx": 882.0,
+            "cy": 451.0,
+            "w": 45.0,
+            "h": 62.0,
+            "angle": -6.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 3611,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-10-31/2012-10-31_16_23_25.jpg",
+          "slot_id": "12",
+          "rotated_rect": {
+            "cx": 683.0,
+            "cy": 206.0,
+            "w": 39.0,
+            "h": 34.0,
+            "angle": -86.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 3657,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-10-31/2012-10-31_16_23_25.jpg",
+          "slot_id": "58",
+          "rotated_rect": {
+            "cx": 746.0,
+            "cy": 336.0,
+            "w": 48.0,
+            "h": 39.0,
+            "angle": -86.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 3811,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-11-08/2012-11-08_10_05_35.jpg",
+          "slot_id": "12",
+          "rotated_rect": {
+            "cx": 683.0,
+            "cy": 206.0,
+            "w": 39.0,
+            "h": 34.0,
+            "angle": -86.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 4012,
+          "image_path": "data/PKLot/PUCPR/Cloudy/2012-11-08/2012-11-08_15_00_49.jpg",
+          "slot_id": "13",
+          "rotated_rect": {
+            "cx": 718.0,
+            "cy": 203.0,
+            "w": 32.0,
+            "h": 38.0,
+            "angle": 0.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 4506,
+          "image_path": "data/PKLot/PUCPR/Rainy/2012-09-16/2012-09-16_07_27_57.jpg",
+          "slot_id": "7",
+          "rotated_rect": {
+            "cx": 517.0,
+            "cy": 208.0,
+            "w": 43.0,
+            "h": 30.0,
+            "angle": -83.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 4552,
+          "image_path": "data/PKLot/PUCPR/Rainy/2012-09-16/2012-09-16_07_27_57.jpg",
+          "slot_id": "53",
+          "rotated_rect": {
+            "cx": 546.0,
+            "cy": 336.0,
+            "w": 62.0,
+            "h": 39.0,
+            "angle": -81.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 4557,
+          "image_path": "data/PKLot/PUCPR/Rainy/2012-09-16/2012-09-16_07_27_57.jpg",
+          "slot_id": "58",
+          "rotated_rect": {
+            "cx": 746.0,
+            "cy": 336.0,
+            "w": 48.0,
+            "h": 39.0,
+            "angle": -86.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 5514,
+          "image_path": "data/PKLot/PUCPR/Rainy/2012-10-23/2012-10-23_08_55_52.jpg",
+          "slot_id": "15",
+          "rotated_rect": {
+            "cx": 791.0,
+            "cy": 203.0,
+            "w": 32.0,
+            "h": 43.0,
+            "angle": 0.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 5574,
+          "image_path": "data/PKLot/PUCPR/Rainy/2012-10-23/2012-10-23_08_55_52.jpg",
+          "slot_id": "75",
+          "rotated_rect": {
+            "cx": 518.0,
+            "cy": 445.0,
+            "w": 62.0,
+            "h": 42.0,
+            "angle": -80.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 6873,
+          "image_path": "data/PKLot/PUCPR/Rainy/2012-11-09/2012-11-09_13_41_52.jpg",
+          "slot_id": "74",
+          "rotated_rect": {
+            "cx": 477.0,
+            "cy": 444.0,
+            "w": 64.0,
+            "h": 49.0,
+            "angle": -77.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 6912,
+          "image_path": "data/PKLot/PUCPR/Rainy/2012-11-09/2012-11-09_16_11_59.jpg",
+          "slot_id": "13",
+          "rotated_rect": {
+            "cx": 718.0,
+            "cy": 203.0,
+            "w": 32.0,
+            "h": 38.0,
+            "angle": 0.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 6924,
+          "image_path": "data/PKLot/PUCPR/Rainy/2012-11-09/2012-11-09_16_11_59.jpg",
+          "slot_id": "25",
+          "rotated_rect": {
+            "cx": 319.0,
+            "cy": 286.0,
+            "w": 49.0,
+            "h": 35.0,
+            "angle": -72.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 7359,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-11/2012-09-11_16_38_55.jpg",
+          "slot_id": "60",
+          "rotated_rect": {
+            "cx": 829.0,
+            "cy": 334.0,
+            "w": 50.0,
+            "h": 40.0,
+            "angle": -87.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 8279,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-14/2012-09-14_12_01_18.jpg",
+          "slot_id": "80",
+          "rotated_rect": {
+            "cx": 741.0,
+            "cy": 447.0,
+            "w": 43.0,
+            "h": 61.0,
+            "angle": -2.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 8928,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-15/2012-09-15_17_07_26.jpg",
+          "slot_id": "29",
+          "rotated_rect": {
+            "cx": 480.0,
+            "cy": 288.0,
+            "w": 44.0,
+            "h": 40.0,
+            "angle": -83.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 8935,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-15/2012-09-15_17_07_26.jpg",
+          "slot_id": "36",
+          "rotated_rect": {
+            "cx": 746.0,
+            "cy": 285.0,
+            "w": 43.0,
+            "h": 37.0,
+            "angle": -88.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 9195,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-16/2012-09-16_12_13_09.jpg",
+          "slot_id": "96",
+          "rotated_rect": {
+            "cx": 441.0,
+            "cy": 530.0,
+            "w": 67.0,
+            "h": 53.0,
+            "angle": -77.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 9654,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-17/2012-09-17_12_19_06.jpg",
+          "slot_id": "55",
+          "rotated_rect": {
+            "cx": 626.0,
+            "cy": 337.0,
+            "w": 53.0,
+            "h": 38.0,
+            "angle": -85.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 9674,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-17/2012-09-17_12_19_06.jpg",
+          "slot_id": "75",
+          "rotated_rect": {
+            "cx": 518.0,
+            "cy": 445.0,
+            "w": 62.0,
+            "h": 42.0,
+            "angle": -80.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 9863,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-17/2012-09-17_17_19_18.jpg",
+          "slot_id": "64",
+          "rotated_rect": {
+            "cx": 997.0,
+            "cy": 333.0,
+            "w": 42.0,
+            "h": 55.0,
+            "angle": -7.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 10476,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-19/2012-09-19_07_35_51.jpg",
+          "slot_id": "77",
+          "rotated_rect": {
+            "cx": 603.0,
+            "cy": 448.0,
+            "w": 58.0,
+            "h": 44.0,
+            "angle": -88.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 10647,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-19/2012-09-19_13_18_36.jpg",
+          "slot_id": "48",
+          "rotated_rect": {
+            "cx": 333.0,
+            "cy": 336.0,
+            "w": 67.0,
+            "h": 37.0,
+            "angle": -76.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 11087,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-20/2012-09-20_11_04_27.jpg",
+          "slot_id": "88",
+          "rotated_rect": {
+            "cx": 1120.0,
+            "cy": 452.0,
+            "w": 46.0,
+            "h": 67.0,
+            "angle": -14.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 11438,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-28/2012-09-28_05_45_56.jpg",
+          "slot_id": "39",
+          "rotated_rect": {
+            "cx": 869.0,
+            "cy": 283.0,
+            "w": 40.0,
+            "h": 53.0,
+            "angle": 0.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 11490,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-09-28/2012-09-28_05_45_56.jpg",
+          "slot_id": "91",
+          "rotated_rect": {
+            "cx": 175.0,
+            "cy": 530.0,
+            "w": 75.0,
+            "h": 49.0,
+            "angle": -72.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 11731,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-10-15/2012-10-15_08_25_47.jpg",
+          "slot_id": "32",
+          "rotated_rect": {
+            "cx": 595.0,
+            "cy": 284.0,
+            "w": 47.0,
+            "h": 39.0,
+            "angle": -82.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 12066,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-10-15/2012-10-15_15_56_05.jpg",
+          "slot_id": "67",
+          "rotated_rect": {
+            "cx": 156.0,
+            "cy": 442.0,
+            "w": 68.0,
+            "h": 39.0,
+            "angle": -72.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 12135,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-10-15/2012-10-15_18_26_11.jpg",
+          "slot_id": "36",
+          "rotated_rect": {
+            "cx": 746.0,
+            "cy": 285.0,
+            "w": 43.0,
+            "h": 37.0,
+            "angle": -88.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 12149,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-10-15/2012-10-15_18_26_11.jpg",
+          "slot_id": "50",
+          "rotated_rect": {
+            "cx": 429.0,
+            "cy": 336.0,
+            "w": 61.0,
+            "h": 32.0,
+            "angle": -83.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 12432,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-10-27/2012-10-27_08_05_40.jpg",
+          "slot_id": "33",
+          "rotated_rect": {
+            "cx": 634.0,
+            "cy": 284.0,
+            "w": 47.0,
+            "h": 35.0,
+            "angle": -83.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 12509,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-10-27/2012-10-27_10_35_48.jpg",
+          "slot_id": "10",
+          "rotated_rect": {
+            "cx": 615.0,
+            "cy": 208.0,
+            "w": 44.0,
+            "h": 32.0,
+            "angle": -85.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 13202,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-10-29/2012-10-29_14_53_19.jpg",
+          "slot_id": "3",
+          "rotated_rect": {
+            "cx": 366.0,
+            "cy": 208.0,
+            "w": 52.0,
+            "h": 32.0,
+            "angle": -77.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 13261,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-10-29/2012-10-29_14_53_19.jpg",
+          "slot_id": "62",
+          "rotated_rect": {
+            "cx": 910.0,
+            "cy": 335.0,
+            "w": 41.0,
+            "h": 46.0,
+            "angle": -6.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 14242,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-11-07/2012-11-07_18_44_53.jpg",
+          "slot_id": "43",
+          "rotated_rect": {
+            "cx": 1032.0,
+            "cy": 281.0,
+            "w": 37.0,
+            "h": 50.0,
+            "angle": -6.0
+          },
+          "label": 0,
+          "pred": 1
+        },
+        {
+          "sample_idx": 14617,
+          "image_path": "data/PKLot/PUCPR/Sunny/2012-11-11/2012-11-11_13_24_05.jpg",
+          "slot_id": "18",
+          "rotated_rect": {
+            "cx": 898.0,
+            "cy": 200.0,
+            "w": 35.0,
+            "h": 36.0,
+            "angle": -1.0
+          },
+          "label": 0,
+          "pred": 0
+        }
+      ]
+    },
+    {
+      "fold": 1,
+      "lot": "UFPR04",
+      "samples": [
+        {
+          "sample_idx": 156,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-14/2012-12-14_17_35_14.jpg",
+          "slot_id": "17",
+          "rotated_rect": {
+            "cx": 447.0,
+            "cy": 246.0,
+            "w": 50.0,
+            "h": 67.0,
+            "angle": -31.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 315,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-17/2012-12-17_11_45_07.jpg",
+          "slot_id": "8",
+          "rotated_rect": {
+            "cx": 925.0,
+            "cy": 195.0,
+            "w": 34.0,
+            "h": 99.0,
+            "angle": -65.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 400,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-22/2012-12-22_15_05_11.jpg",
+          "slot_id": "9",
+          "rotated_rect": {
+            "cx": 939.0,
+            "cy": 160.0,
+            "w": 29.0,
+            "h": 79.0,
+            "angle": -67.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 410,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-22/2012-12-22_15_05_11.jpg",
+          "slot_id": "19",
+          "rotated_rect": {
+            "cx": 532.0,
+            "cy": 178.0,
+            "w": 44.0,
+            "h": 61.0,
+            "angle": -42.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 472,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-22/2012-12-22_19_20_16.jpg",
+          "slot_id": "25",
+          "rotated_rect": {
+            "cx": 400.0,
+            "cy": 201.0,
+            "w": 48.0,
+            "h": 60.0,
+            "angle": -24.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 500,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-27/2012-12-27_11_20_06.jpg",
+          "slot_id": "25",
+          "rotated_rect": {
+            "cx": 400.0,
+            "cy": 201.0,
+            "w": 48.0,
+            "h": 60.0,
+            "angle": -24.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 501,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-27/2012-12-27_11_20_06.jpg",
+          "slot_id": "26",
+          "rotated_rect": {
+            "cx": 445.0,
+            "cy": 173.0,
+            "w": 42.0,
+            "h": 63.0,
+            "angle": -32.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 503,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-27/2012-12-27_11_20_06.jpg",
+          "slot_id": "28",
+          "rotated_rect": {
+            "cx": 522.0,
+            "cy": 119.0,
+            "w": 36.0,
+            "h": 55.0,
+            "angle": -39.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 520,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-27/2012-12-27_13_25_09.jpg",
+          "slot_id": "17",
+          "rotated_rect": {
+            "cx": 447.0,
+            "cy": 246.0,
+            "w": 50.0,
+            "h": 67.0,
+            "angle": -31.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 631,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-28/2012-12-28_16_30_12.jpg",
+          "slot_id": "16",
+          "rotated_rect": {
+            "cx": 361.0,
+            "cy": 324.0,
+            "w": 68.0,
+            "h": 76.0,
+            "angle": -27.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 656,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-28/2012-12-28_18_35_14.jpg",
+          "slot_id": "13",
+          "rotated_rect": {
+            "cx": 734.0,
+            "cy": 259.0,
+            "w": 115.0,
+            "h": 31.0,
+            "angle": -17.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 770,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-29/2012-12-29_15_20_38.jpg",
+          "slot_id": "15",
+          "rotated_rect": {
+            "cx": 774.0,
+            "cy": 191.0,
+            "w": 98.0,
+            "h": 26.0,
+            "angle": -15.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 784,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-29/2012-12-29_17_25_41.jpg",
+          "slot_id": "1",
+          "rotated_rect": {
+            "cx": 699.0,
+            "cy": 649.0,
+            "w": 75.0,
+            "h": 102.0,
+            "angle": -31.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 788,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2012-12-29/2012-12-29_17_25_41.jpg",
+          "slot_id": "5",
+          "rotated_rect": {
+            "cx": 820.0,
+            "cy": 342.0,
+            "w": 57.0,
+            "h": 103.0,
+            "angle": -57.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 844,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-15/2013-01-15_17_31_55.jpg",
+          "slot_id": "5",
+          "rotated_rect": {
+            "cx": 773.0,
+            "cy": 346.0,
+            "w": 49.0,
+            "h": 109.0,
+            "angle": -56.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 879,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-15/2013-01-15_19_36_58.jpg",
+          "slot_id": "12",
+          "rotated_rect": {
+            "cx": 687.0,
+            "cy": 300.0,
+            "w": 101.0,
+            "h": 42.0,
+            "angle": -14.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1020,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-16/2013-01-16_19_20_16.jpg",
+          "slot_id": "13",
+          "rotated_rect": {
+            "cx": 693.0,
+            "cy": 262.0,
+            "w": 108.0,
+            "h": 38.0,
+            "angle": -10.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1034,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-16/2013-01-16_19_20_16.jpg",
+          "slot_id": "27",
+          "rotated_rect": {
+            "cx": 401.0,
+            "cy": 186.0,
+            "w": 47.0,
+            "h": 55.0,
+            "angle": -36.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1054,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-19/2013-01-19_08_00_03.jpg",
+          "slot_id": "19",
+          "rotated_rect": {
+            "cx": 452.0,
+            "cy": 214.0,
+            "w": 48.0,
+            "h": 61.0,
+            "angle": -47.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1179,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-19/2013-01-19_18_30_14.jpg",
+          "slot_id": "4",
+          "rotated_rect": {
+            "cx": 762.0,
+            "cy": 409.0,
+            "w": 54.0,
+            "h": 113.0,
+            "angle": -51.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1257,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-20/2013-01-20_10_20_05.jpg",
+          "slot_id": "26",
+          "rotated_rect": {
+            "cx": 359.0,
+            "cy": 211.0,
+            "w": 50.0,
+            "h": 58.0,
+            "angle": -30.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1315,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-20/2013-01-20_14_30_10.jpg",
+          "slot_id": "28",
+          "rotated_rect": {
+            "cx": 437.0,
+            "cy": 162.0,
+            "w": 49.0,
+            "h": 54.0,
+            "angle": -34.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1357,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-20/2013-01-20_18_45_14.jpg",
+          "slot_id": "14",
+          "rotated_rect": {
+            "cx": 733.0,
+            "cy": 227.0,
+            "w": 97.0,
+            "h": 35.0,
+            "angle": -8.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1366,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-20/2013-01-20_18_45_14.jpg",
+          "slot_id": "23",
+          "rotated_rect": {
+            "cx": 198.0,
+            "cy": 310.0,
+            "w": 75.0,
+            "h": 79.0,
+            "angle": -19.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1443,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-22/2013-01-22_16_10_11.jpg",
+          "slot_id": "16",
+          "rotated_rect": {
+            "cx": 307.0,
+            "cy": 326.0,
+            "w": 64.0,
+            "h": 73.0,
+            "angle": -27.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1489,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-22/2013-01-22_20_25_15.jpg",
+          "slot_id": "6",
+          "rotated_rect": {
+            "cx": 803.0,
+            "cy": 296.0,
+            "w": 47.0,
+            "h": 101.0,
+            "angle": -61.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 1528,
+          "image_path": "data/PKLot/UFPR04/Cloudy/2013-01-29/2013-01-29_15_06_17.jpg",
+          "slot_id": "17",
+          "rotated_rect": {
+            "cx": 361.0,
+            "cy": 283.0,
+            "w": 56.0,
+            "h": 60.0,
+            "angle": -32.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 2227,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-12/2012-12-12_19_50_16.jpg",
+          "slot_id": "16",
+          "rotated_rect": {
+            "cx": 400.0,
+            "cy": 285.0,
+            "w": 58.0,
+            "h": 65.0,
+            "angle": -22.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 2255,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-13/2012-12-13_10_55_06.jpg",
+          "slot_id": "16",
+          "rotated_rect": {
+            "cx": 400.0,
+            "cy": 285.0,
+            "w": 58.0,
+            "h": 65.0,
+            "angle": -22.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 2343,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-13/2012-12-13_17_15_13.jpg",
+          "slot_id": "20",
+          "rotated_rect": {
+            "cx": 568.0,
+            "cy": 149.0,
+            "w": 45.0,
+            "h": 61.0,
+            "angle": -47.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 2426,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-16/2012-12-16_14_40_11.jpg",
+          "slot_id": "19",
+          "rotated_rect": {
+            "cx": 532.0,
+            "cy": 178.0,
+            "w": 44.0,
+            "h": 61.0,
+            "angle": -42.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 2617,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-18/2012-12-18_10_40_06.jpg",
+          "slot_id": "14",
+          "rotated_rect": {
+            "cx": 813.0,
+            "cy": 189.0,
+            "w": 105.0,
+            "h": 35.0,
+            "angle": -7.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 2704,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-18/2012-12-18_17_00_13.jpg",
+          "slot_id": "17",
+          "rotated_rect": {
+            "cx": 447.0,
+            "cy": 246.0,
+            "w": 50.0,
+            "h": 67.0,
+            "angle": -31.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 2713,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-18/2012-12-18_17_00_13.jpg",
+          "slot_id": "26",
+          "rotated_rect": {
+            "cx": 445.0,
+            "cy": 173.0,
+            "w": 42.0,
+            "h": 63.0,
+            "angle": -32.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 3030,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-21/2012-12-21_10_55_06.jpg",
+          "slot_id": "7",
+          "rotated_rect": {
+            "cx": 903.0,
+            "cy": 226.0,
+            "w": 43.0,
+            "h": 96.0,
+            "angle": -60.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 3050,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-21/2012-12-21_10_55_06.jpg",
+          "slot_id": "27",
+          "rotated_rect": {
+            "cx": 486.0,
+            "cy": 144.0,
+            "w": 46.0,
+            "h": 59.0,
+            "angle": -34.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 3079,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-21/2012-12-21_13_00_08.jpg",
+          "slot_id": "28",
+          "rotated_rect": {
+            "cx": 522.0,
+            "cy": 119.0,
+            "w": 36.0,
+            "h": 55.0,
+            "angle": -39.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3087,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-21/2012-12-21_15_10_10.jpg",
+          "slot_id": "8",
+          "rotated_rect": {
+            "cx": 925.0,
+            "cy": 195.0,
+            "w": 34.0,
+            "h": 99.0,
+            "angle": -65.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 3169,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-23/2012-12-23_10_55_06.jpg",
+          "slot_id": "6",
+          "rotated_rect": {
+            "cx": 885.0,
+            "cy": 266.0,
+            "w": 47.0,
+            "h": 95.0,
+            "angle": -58.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3227,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-23/2012-12-23_15_10_11.jpg",
+          "slot_id": "8",
+          "rotated_rect": {
+            "cx": 925.0,
+            "cy": 195.0,
+            "w": 34.0,
+            "h": 99.0,
+            "angle": -65.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3542,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-25/2012-12-25_14_25_09.jpg",
+          "slot_id": "15",
+          "rotated_rect": {
+            "cx": 841.0,
+            "cy": 161.0,
+            "w": 84.0,
+            "h": 32.0,
+            "angle": -5.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3555,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-25/2012-12-25_14_25_09.jpg",
+          "slot_id": "28",
+          "rotated_rect": {
+            "cx": 522.0,
+            "cy": 119.0,
+            "w": 36.0,
+            "h": 55.0,
+            "angle": -39.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3594,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-25/2012-12-25_18_35_14.jpg",
+          "slot_id": "11",
+          "rotated_rect": {
+            "cx": 737.0,
+            "cy": 313.0,
+            "w": 111.0,
+            "h": 42.0,
+            "angle": -17.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3712,
+          "image_path": "data/PKLot/UFPR04/Sunny/2012-12-26/2012-12-26_14_15_10.jpg",
+          "slot_id": "17",
+          "rotated_rect": {
+            "cx": 447.0,
+            "cy": 246.0,
+            "w": 50.0,
+            "h": 67.0,
+            "angle": -31.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3747,
+          "image_path": "data/PKLot/UFPR04/Sunny/2013-01-17/2013-01-17_11_35_07.jpg",
+          "slot_id": "24",
+          "rotated_rect": {
+            "cx": 260.0,
+            "cy": 276.0,
+            "w": 63.0,
+            "h": 73.0,
+            "angle": -25.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 3789,
+          "image_path": "data/PKLot/UFPR04/Sunny/2013-01-17/2013-01-17_15_45_12.jpg",
+          "slot_id": "10",
+          "rotated_rect": {
+            "cx": 469.0,
+            "cy": 649.0,
+            "w": 169.0,
+            "h": 82.0,
+            "angle": -16.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 4063,
+          "image_path": "data/PKLot/UFPR04/Sunny/2013-01-21/2013-01-21_17_35_13.jpg",
+          "slot_id": "4",
+          "rotated_rect": {
+            "cx": 762.0,
+            "cy": 409.0,
+            "w": 54.0,
+            "h": 113.0,
+            "angle": -51.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 4081,
+          "image_path": "data/PKLot/UFPR04/Sunny/2013-01-21/2013-01-21_17_35_13.jpg",
+          "slot_id": "22",
+          "rotated_rect": {
+            "cx": 127.0,
+            "cy": 363.0,
+            "w": 76.0,
+            "h": 79.0,
+            "angle": -19.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 4150,
+          "image_path": "data/PKLot/UFPR04/Sunny/2013-01-22/2013-01-22_10_15_05.jpg",
+          "slot_id": "7",
+          "rotated_rect": {
+            "cx": 818.0,
+            "cy": 255.0,
+            "w": 33.0,
+            "h": 95.0,
+            "angle": -65.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 4197,
+          "image_path": "data/PKLot/UFPR04/Sunny/2013-01-29/2013-01-29_18_51_21.jpg",
+          "slot_id": "26",
+          "rotated_rect": {
+            "cx": 359.0,
+            "cy": 211.0,
+            "w": 50.0,
+            "h": 58.0,
+            "angle": -30.0
+          },
+          "label": 1,
+          "pred": 1
+        }
+      ]
+    },
+    {
+      "fold": 2,
+      "lot": "UFPR05",
+      "samples": [
+        {
+          "sample_idx": 72,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-02-26/2013-02-26_13_49_34.jpg",
+          "slot_id": "33",
+          "rotated_rect": {
+            "cx": 977.0,
+            "cy": 164.0,
+            "w": 49.0,
+            "h": 99.0,
+            "angle": -87.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 238,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-05/2013-03-05_18_25_14.jpg",
+          "slot_id": "39",
+          "rotated_rect": {
+            "cx": 1087.0,
+            "cy": 84.0,
+            "w": 61.0,
+            "h": 57.0,
+            "angle": 0.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 286,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-09/2013-03-09_10_35_05.jpg",
+          "slot_id": "7",
+          "rotated_rect": {
+            "cx": 391.0,
+            "cy": 188.0,
+            "w": 41.0,
+            "h": 109.0,
+            "angle": -76.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 573,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-12/2013-03-12_17_50_13.jpg",
+          "slot_id": "14",
+          "rotated_rect": {
+            "cx": 608.0,
+            "cy": 300.0,
+            "w": 57.0,
+            "h": 121.0,
+            "angle": -79.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 602,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-13/2013-03-13_08_15_02.jpg",
+          "slot_id": "3",
+          "rotated_rect": {
+            "cx": 550.0,
+            "cy": 416.0,
+            "w": 65.0,
+            "h": 139.0,
+            "angle": -74.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 775,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-14/2013-03-14_10_25_57.jpg",
+          "slot_id": "16",
+          "rotated_rect": {
+            "cx": 531.0,
+            "cy": 197.0,
+            "w": 44.0,
+            "h": 110.0,
+            "angle": -80.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 784,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-14/2013-03-14_10_25_57.jpg",
+          "slot_id": "25",
+          "rotated_rect": {
+            "cx": 842.0,
+            "cy": 171.0,
+            "w": 57.0,
+            "h": 71.0,
+            "angle": -76.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 820,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-14/2013-03-14_12_45_59.jpg",
+          "slot_id": "21",
+          "rotated_rect": {
+            "cx": 1134.0,
+            "cy": 381.0,
+            "w": 72.0,
+            "h": 100.0,
+            "angle": -85.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 882,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-14/2013-03-14_17_21_05.jpg",
+          "slot_id": "3",
+          "rotated_rect": {
+            "cx": 550.0,
+            "cy": 416.0,
+            "w": 65.0,
+            "h": 139.0,
+            "angle": -74.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 917,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-14/2013-03-14_17_21_05.jpg",
+          "slot_id": "38",
+          "rotated_rect": {
+            "cx": 1152.0,
+            "cy": 118.0,
+            "w": 58.0,
+            "h": 69.0,
+            "angle": 0.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 955,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-15/2013-03-15_07_35_01.jpg",
+          "slot_id": "36",
+          "rotated_rect": {
+            "cx": 817.0,
+            "cy": 62.0,
+            "w": 41.0,
+            "h": 78.0,
+            "angle": -88.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1283,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-17/2013-03-17_11_35_06.jpg",
+          "slot_id": "4",
+          "rotated_rect": {
+            "cx": 502.0,
+            "cy": 348.0,
+            "w": 61.0,
+            "h": 130.0,
+            "angle": -76.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1302,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-17/2013-03-17_11_35_06.jpg",
+          "slot_id": "23",
+          "rotated_rect": {
+            "cx": 974.0,
+            "cy": 265.0,
+            "w": 74.0,
+            "h": 71.0,
+            "angle": -81.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1447,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-18/2013-03-18_08_50_03.jpg",
+          "slot_id": "8",
+          "rotated_rect": {
+            "cx": 362.0,
+            "cy": 147.0,
+            "w": 46.0,
+            "h": 92.0,
+            "angle": -74.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 1544,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-19/2013-03-19_10_15_05.jpg",
+          "slot_id": "25",
+          "rotated_rect": {
+            "cx": 842.0,
+            "cy": 171.0,
+            "w": 57.0,
+            "h": 71.0,
+            "angle": -76.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 1561,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-03-19/2013-03-19_12_35_07.jpg",
+          "slot_id": "2",
+          "rotated_rect": {
+            "cx": 611.0,
+            "cy": 492.0,
+            "w": 67.0,
+            "h": 153.0,
+            "angle": -74.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 1840,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-04-13/2013-04-13_10_05_04.jpg",
+          "slot_id": "1",
+          "rotated_rect": {
+            "cx": 678.0,
+            "cy": 593.0,
+            "w": 82.0,
+            "h": 176.0,
+            "angle": -71.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 1844,
+          "image_path": "data/PKLot/UFPR05/Cloudy/2013-04-13/2013-04-13_10_05_04.jpg",
+          "slot_id": "5",
+          "rotated_rect": {
+            "cx": 462.0,
+            "cy": 288.0,
+            "w": 47.0,
+            "h": 115.0,
+            "angle": -77.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 2211,
+          "image_path": "data/PKLot/UFPR05/Rainy/2013-03-16/2013-03-16_17_35_13.jpg",
+          "slot_id": "12",
+          "rotated_rect": {
+            "cx": 704.0,
+            "cy": 435.0,
+            "w": 67.0,
+            "h": 128.0,
+            "angle": -73.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 2316,
+          "image_path": "data/PKLot/UFPR05/Rainy/2013-03-20/2013-03-20_16_45_12.jpg",
+          "slot_id": "37",
+          "rotated_rect": {
+            "cx": 776.0,
+            "cy": 31.0,
+            "w": 41.0,
+            "h": 88.0,
+            "angle": -88.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 2372,
+          "image_path": "data/PKLot/UFPR05/Rainy/2013-04-13/2013-04-13_07_45_02.jpg",
+          "slot_id": "13",
+          "rotated_rect": {
+            "cx": 663.0,
+            "cy": 364.0,
+            "w": 59.0,
+            "h": 110.0,
+            "angle": -77.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 2373,
+          "image_path": "data/PKLot/UFPR05/Rainy/2013-04-13/2013-04-13_07_45_02.jpg",
+          "slot_id": "14",
+          "rotated_rect": {
+            "cx": 608.0,
+            "cy": 300.0,
+            "w": 57.0,
+            "h": 121.0,
+            "angle": -79.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 2482,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-02-22/2013-02-22_11_30_05.jpg",
+          "slot_id": "3",
+          "rotated_rect": {
+            "cx": 550.0,
+            "cy": 416.0,
+            "w": 65.0,
+            "h": 139.0,
+            "angle": -74.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 2583,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-02-22/2013-02-22_16_05_10.jpg",
+          "slot_id": "24",
+          "rotated_rect": {
+            "cx": 904.0,
+            "cy": 215.0,
+            "w": 65.0,
+            "h": 73.0,
+            "angle": -80.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 2671,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-02-23/2013-02-23_09_35_03.jpg",
+          "slot_id": "32",
+          "rotated_rect": {
+            "cx": 1049.0,
+            "cy": 210.0,
+            "w": 48.0,
+            "h": 109.0,
+            "angle": -83.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 2775,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-02-23/2013-02-23_16_30_10.jpg",
+          "slot_id": "16",
+          "rotated_rect": {
+            "cx": 531.0,
+            "cy": 197.0,
+            "w": 44.0,
+            "h": 110.0,
+            "angle": -80.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 2822,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-02-23/2013-02-23_18_55_13.jpg",
+          "slot_id": "23",
+          "rotated_rect": {
+            "cx": 974.0,
+            "cy": 265.0,
+            "w": 74.0,
+            "h": 71.0,
+            "angle": -81.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 2935,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-02-24/2013-02-24_13_05_07.jpg",
+          "slot_id": "16",
+          "rotated_rect": {
+            "cx": 531.0,
+            "cy": 197.0,
+            "w": 44.0,
+            "h": 110.0,
+            "angle": -80.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3100,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-02/2013-03-02_07_55_02.jpg",
+          "slot_id": "21",
+          "rotated_rect": {
+            "cx": 1134.0,
+            "cy": 381.0,
+            "w": 72.0,
+            "h": 100.0,
+            "angle": -85.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3109,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-02/2013-03-02_07_55_02.jpg",
+          "slot_id": "30",
+          "rotated_rect": {
+            "cx": 1195.0,
+            "cy": 317.0,
+            "w": 66.0,
+            "h": 117.0,
+            "angle": -77.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 3161,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-02/2013-03-02_12_30_07.jpg",
+          "slot_id": "2",
+          "rotated_rect": {
+            "cx": 611.0,
+            "cy": 492.0,
+            "w": 67.0,
+            "h": 153.0,
+            "angle": -74.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3318,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-03/2013-03-03_07_25_01.jpg",
+          "slot_id": "39",
+          "rotated_rect": {
+            "cx": 1087.0,
+            "cy": 84.0,
+            "w": 61.0,
+            "h": 57.0,
+            "angle": 0.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3346,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-03/2013-03-03_09_45_04.jpg",
+          "slot_id": "27",
+          "rotated_rect": {
+            "cx": 746.0,
+            "cy": 98.0,
+            "w": 60.0,
+            "h": 50.0,
+            "angle": -57.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3900,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-10/2013-03-10_12_05_07.jpg",
+          "slot_id": "21",
+          "rotated_rect": {
+            "cx": 1134.0,
+            "cy": 381.0,
+            "w": 72.0,
+            "h": 100.0,
+            "angle": -85.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 3909,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-10/2013-03-10_12_05_07.jpg",
+          "slot_id": "30",
+          "rotated_rect": {
+            "cx": 1195.0,
+            "cy": 317.0,
+            "w": 66.0,
+            "h": 117.0,
+            "angle": -77.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 4186,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-11/2013-03-11_16_10_12.jpg",
+          "slot_id": "27",
+          "rotated_rect": {
+            "cx": 746.0,
+            "cy": 98.0,
+            "w": 60.0,
+            "h": 50.0,
+            "angle": -57.0
+          },
+          "label": 1,
+          "pred": 0
+        },
+        {
+          "sample_idx": 4208,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-11/2013-03-11_18_30_14.jpg",
+          "slot_id": "9",
+          "rotated_rect": {
+            "cx": 347.0,
+            "cy": 112.0,
+            "w": 38.0,
+            "h": 85.0,
+            "angle": -76.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 4260,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-12/2013-03-12_10_30_05.jpg",
+          "slot_id": "21",
+          "rotated_rect": {
+            "cx": 1134.0,
+            "cy": 381.0,
+            "w": 72.0,
+            "h": 100.0,
+            "angle": -85.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 4439,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-18/2013-03-18_09_55_04.jpg",
+          "slot_id": "40",
+          "rotated_rect": {
+            "cx": 1031.0,
+            "cy": 57.0,
+            "w": 55.0,
+            "h": 58.0,
+            "angle": -83.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 4658,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-21/2013-03-21_13_30_08.jpg",
+          "slot_id": "19",
+          "rotated_rect": {
+            "cx": 427.0,
+            "cy": 86.0,
+            "w": 31.0,
+            "h": 84.0,
+            "angle": -80.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 4821,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-22/2013-03-22_10_25_05.jpg",
+          "slot_id": "22",
+          "rotated_rect": {
+            "cx": 1045.0,
+            "cy": 310.0,
+            "w": 71.0,
+            "h": 74.0,
+            "angle": -82.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 4841,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-03-22/2013-03-22_13_00_08.jpg",
+          "slot_id": "2",
+          "rotated_rect": {
+            "cx": 611.0,
+            "cy": 492.0,
+            "w": 67.0,
+            "h": 153.0,
+            "angle": -74.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 5056,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-04-09/2013-04-09_16_55_12.jpg",
+          "slot_id": "17",
+          "rotated_rect": {
+            "cx": 494.0,
+            "cy": 162.0,
+            "w": 42.0,
+            "h": 91.0,
+            "angle": -75.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 5122,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-04-10/2013-04-10_09_45_04.jpg",
+          "slot_id": "3",
+          "rotated_rect": {
+            "cx": 550.0,
+            "cy": 416.0,
+            "w": 65.0,
+            "h": 139.0,
+            "angle": -74.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 5193,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-04-10/2013-04-10_12_00_06.jpg",
+          "slot_id": "34",
+          "rotated_rect": {
+            "cx": 910.0,
+            "cy": 125.0,
+            "w": 45.0,
+            "h": 86.0,
+            "angle": -87.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 5488,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-04-12/2013-04-12_07_00_01.jpg",
+          "slot_id": "9",
+          "rotated_rect": {
+            "cx": 347.0,
+            "cy": 112.0,
+            "w": 38.0,
+            "h": 85.0,
+            "angle": -76.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 5642,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-04-14/2013-04-14_13_10_07.jpg",
+          "slot_id": "3",
+          "rotated_rect": {
+            "cx": 550.0,
+            "cy": 416.0,
+            "w": 65.0,
+            "h": 139.0,
+            "angle": -74.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 5663,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-04-14/2013-04-14_13_10_07.jpg",
+          "slot_id": "24",
+          "rotated_rect": {
+            "cx": 904.0,
+            "cy": 215.0,
+            "w": 65.0,
+            "h": 73.0,
+            "angle": -80.0
+          },
+          "label": 0,
+          "pred": 0
+        },
+        {
+          "sample_idx": 5681,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-04-14/2013-04-14_15_35_10.jpg",
+          "slot_id": "2",
+          "rotated_rect": {
+            "cx": 611.0,
+            "cy": 492.0,
+            "w": 67.0,
+            "h": 153.0,
+            "angle": -74.0
+          },
+          "label": 1,
+          "pred": 1
+        },
+        {
+          "sample_idx": 5747,
+          "image_path": "data/PKLot/UFPR05/Sunny/2013-04-14/2013-04-14_17_55_13.jpg",
+          "slot_id": "28",
+          "rotated_rect": {
+            "cx": 707.0,
+            "cy": 68.0,
+            "w": 67.0,
+            "h": 48.0,
+            "angle": -60.0
+          },
+          "label": 1,
+          "pred": 1
+        }
+      ]
+    }
+  ]
+}

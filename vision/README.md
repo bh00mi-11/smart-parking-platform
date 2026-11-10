@@ -158,29 +158,65 @@ To scale beyond small local sets without exhausting local laptop disk space:
 
 ---
 
-### 5.3 MobileNetV3 3-Fold Leave-One-Lot-Out (LOO) Cross-Validation (Current Local Checkpoints)
+### 5.3 Large-Scale MobileNetV3 3-Fold Leave-One-Lot-Out (LOO) Cross-Validation (Colab GPU Run)
 
-The MobileNetV3-Small classifier was evaluated across the 3 PKLot facilities using a Leave-One-Lot-Out (LOO) protocol: in each fold, two facilities are used for training/validation and the remaining held-out facility is used exclusively for testing.
+The MobileNetV3-Small classifier was evaluated across the 3 PKLot facilities using a Leave-One-Lot-Out (LOO) protocol trained on Google Colab (GPU) with **150 sampled frames per lot (450 frames total)**, partitioned strictly by day to prevent intra-image and temporal data leakage.
+- **Sampling Method**: Deterministic stride sampling across `(lot, weather, day)` combinations to prevent adjacent video-frame redundancy.
+- **Total Evaluated Test Crops**: **25,200 crops** (15,000 for PUCPR, 4,200 for UFPR04, 6,000 for UFPR05).
+- **Execution Run Commit**: `1b03105` (`fix-archive-sampler`).
 
-> [!NOTE]
-> **Root Cause of Previous Disagreement & Inference Parity Resolution**:
-> Previously, `eval.py` (`PKLotDataset`) and `compare_classifier_vs_yolo()` (`classify_slots`) showed differing results because `compare_classifier_vs_yolo()` only parsed `<contour>` polygon bounding boxes instead of `<rotatedRect>` parameters. When bounding boxes were used on angled lots (such as UFPR04 and UFPR05), adjacent parking spaces overlapped into the crop, causing degradation.
-> Both paths now share one unified preprocessing function `preprocess_slot_crop()` in `vision/src/data_pkl.py` and extract oriented bounding boxes identically. Consequently, **both evaluation paths now achieve 100% exact numerical agreement**.
+#### Per-Fold Leave-One-Lot-Out Metrics (Real Data from `loo_fold*_metrics.json`):
+| Fold / Held-Out Lot | Test Crops ($N$) | Accuracy | Precision | Recall | F1 Score | ECE (Uncal) | ECE (Cal) | CPU ms/crop | Checkpoint File |
+|---|---|---|---|---|---|---|---|---|---|
+| **Fold 0 (PUCPR)** | 15,000 | **95.20%** | 0.8986 | 0.9960 | **0.9448** | 0.0473 | 0.0462 | 0.30 ms | `mobilenetv3_loo_fold0.pth` |
+| **Fold 1 (UFPR04)** | 4,200 | **99.86%** | 1.0000 | 0.9967 | **0.9983** | 0.0164 | 0.0919 | 0.30 ms | `mobilenetv3_loo_fold1.pth` |
+| **Fold 2 (UFPR05)** | 6,000 | **99.37%** | 0.9920 | 0.9975 | **0.9947** | 0.0084 | 0.1277 | 0.30 ms | `mobilenetv3_loo_fold2.pth` |
+| **Macro Average** | **25,200** | **98.14%** | **0.9635** | **0.9967** | **0.9793** | **0.0240** | **0.0886** | **0.30 ms** | *All 3 LOO models* |
 
-> [!WARNING]
-> **Data Scale Notice**: The Colab run evaluated test crops corresponding to the 12 local PKLot frames (4 frames per lot: 780 crops for PUCPR, 146 crops for UFPR04, and 184 crops for UFPR05; total 1,110 test crops). **This run used 12 frames, so it is not yet a large-data result.** Full multi-thousand frame training on the entire 12,000+ PKLot archive remains future work on high-capacity GPU clusters.
-
-#### Per-Fold Leave-One-Lot-Out Metrics (from `loo_fold*_metrics.json`):
-| Fold / Held-Out Lot | Test Crops ($N$) | Accuracy | Precision | Recall | F1 Score | Calibrated ECE | Checkpoint File |
-|---|---|---|---|---|---|---|---|
-| **Fold 0 (PUCPR)** | 780 | **85.64%** | 92.58% | 79.86% | **0.8575** | 0.2449 | `mobilenetv3_loo_fold0.pth` |
-| **Fold 1 (UFPR04)** | 146 | **94.52%** | 93.55% | 82.86% | **0.8788** | 0.3331 | `mobilenetv3_loo_fold1.pth` |
-| **Fold 2 (UFPR05)** | 184 | **93.48%** | 91.47% | 99.16% | **0.9516** | 0.2791 | `mobilenetv3_loo_fold2.pth` |
-| **Macro Average** | **1,110** | **91.21%** | **92.53%** | **87.29%** | **0.8960** | **0.2857** | *All 3 LOO models* |
+#### Honest Diagnostic Notes from the Data:
+1. **Confusion Matrix Analysis & Weakest Lot**:
+   - **Fold 0 (PUCPR)** is the weakest lot with an accuracy of 95.20% (vs 99.86% for UFPR04 and 99.37% for UFPR05).
+   - Its confusion matrix shows `[[8119, 695], [25, 6161]]`: 695 Free slots were falsely classified as Occupied (false positives), while only 25 Occupied slots were missed. This occurs because the PUCPR camera perspective is much further away and at a steep angle, causing shadows and ground markings to occasionally resemble parked vehicles.
+   - **Fold 1 (UFPR04)** achieved near-perfect performance with `[[2385, 0], [6, 1809]]` (0 false positives, 6 false negatives).
+   - **Fold 2 (UFPR05)** achieved `[[2382, 29], [9, 3580]]` (29 false positives, 9 false negatives).
+2. **Temperature Scaling & Expected Calibration Error (ECE)**:
+   - For **PUCPR (Fold 0)**, temperature scaling slightly reduced ECE from 0.0473 to 0.0462 ($T = 1.503$).
+   - For **UFPR04 (Fold 1)** and **UFPR05 (Fold 2)**, uncalibrated ECE was already exceptionally low (0.0164 and 0.0084) due to very high classification accuracy. Fitting temperature scaling on the validation split resulted in higher temperatures ($T = 2.379$ and $T = 3.280$), which over-smoothed probabilities on the test set and increased test ECE to 0.0919 and 0.1277. Hence, for highly confident distributions on close-range lots, uncalibrated probabilities maintain better sharpness.
 
 ---
 
-### 5.3 Fusion Calibration & Baseline Comparisons (`eval_fusion.py`)
+### 5.4 Model Checkpoints & Production Weights
+
+Model checkpoints generated from the Colab GPU run:
+
+| Checkpoint File | Purpose / Protocol | Training Data | Evaluation / Generalization Scope | Size | SHA256 Hash |
+|---|---|---|---|---|---|
+| `mobilenetv3_final.pth` | **Production & Demo Default** | All 3 Lots (PUCPR + UFPR04 + UFPR05) | Backend live inference & demo. *Trained on all lots (Val F1 0.8725); metrics reflect validation split, not unseen generalization.* | 17.64 MB | `e12c508715a54a9b4f69c6a140cc4754ba8143d6219279982dc38281f2f15be4` |
+| `mobilenetv3_loo_fold0.pth` | Evaluation Only | UFPR04 + UFPR05 | Evaluated on held-out PUCPR | 17.64 MB | `854d57461c60a316719c8c79181f2f7d9bb96da20efe3981e2f684dee5c06b8c` |
+| `mobilenetv3_loo_fold1.pth` | Evaluation Only | PUCPR + UFPR05 | Evaluated on held-out UFPR04 | 17.64 MB | `abe108b1f347d2d1d0a40d54ab7078f1b0bba581b573f134bff881fdf4af9f49` |
+| `mobilenetv3_loo_fold2.pth` | Evaluation Only | PUCPR + UFPR04 | Evaluated on held-out UFPR05 | 17.64 MB | `ae21014cfffe14a911e6f16c540dcb639e035251d8b8f81c8bd28d8b2cf41d64` |
+
+*Default Weights Lookup*: [`camera_adapter.py`](file:///c:/Users/manis/OneDrive/Desktop/vit/smart%20parking%20platform/vision/src/camera_adapter.py) and [`classify_slots.py`](file:///c:/Users/manis/OneDrive/Desktop/vit/smart%20parking%20platform/vision/src/classify_slots.py) look for weights in order:
+1. Explicit custom path passed to the loader.
+2. `MOBILENETV3_WEIGHTS_PATH` environment variable.
+3. `vision/outputs/mobilenetv3_final.pth` (production default).
+4. `vision/outputs/mobilenetv3_best.pth`.
+
+---
+
+### 5.5 Earlier Small-Sample Pipeline Results (Superseded)
+
+> [!NOTE]
+> **Superseded Pipeline Check (Historical 12-Frame Run)**:
+> Before running the 450-frame Colab pipeline, a rapid verification check was performed on 12 local frames (1,110 total test crops: 780 for PUCPR, 146 for UFPR04, 184 for UFPR05). These numbers are retained below for historical auditability and are completely superseded by the 25,200-crop results in Section 5.3:
+> - Fold 0 (PUCPR, 780 crops): Accuracy 85.64%, F1 0.8575, ECE 0.2449
+> - Fold 1 (UFPR04, 146 crops): Accuracy 94.52%, F1 0.8788, ECE 0.3331
+> - Fold 2 (UFPR05, 184 crops): Accuracy 93.48%, F1 0.9516, ECE 0.2791
+> - Macro Average (1,110 crops): Accuracy 91.21%, F1 0.8960, ECE 0.2857
+
+---
+
+### 5.6 Fusion Calibration & Baseline Comparisons (`eval_fusion.py`)
 
 #### Experimental Protocol:
 - **Tuning Seeds**: `[101, 102]` (used strictly for tuning hyperparameters).

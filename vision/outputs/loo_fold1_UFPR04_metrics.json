@@ -1,12 +1,12 @@
 {
-  "test_crops_count": 146,
-  "accuracy": 0.9452,
-  "precision": 0.9355,
-  "recall": 0.8286,
-  "f1_score": 0.8788,
-  "ece_uncalibrated": 0.3137,
-  "ece_calibrated": 0.3331,
-  "fitted_temperature": 1.19,
+  "test_crops_count": 4200,
+  "accuracy": 0.9986,
+  "precision": 1.0,
+  "recall": 0.9967,
+  "f1_score": 0.9983,
+  "ece_uncalibrated": 0.0164,
+  "ece_calibrated": 0.0919,
+  "fitted_temperature": 2.379,
   "confusion_matrix": {
     "labels": [
       "Free (0)",
@@ -14,15 +14,15 @@
     ],
     "matrix": [
       [
-        109,
-        2
+        2385,
+        0
       ],
       [
         6,
-        29
+        1809
       ]
     ]
   },
-  "inference_latency_cpu_ms_per_crop": 12.42,
-  "throughput_crops_per_sec": 80.5
+  "inference_latency_cpu_ms_per_crop": 0.3,
+  "throughput_crops_per_sec": 3360.0
 }

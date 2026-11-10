@@ -26,7 +26,8 @@ _CLASSIFIER_MODEL: Optional[torch.nn.Module] = None
 def get_classifier_weights_path(custom_path: Optional[Union[str, Path]] = None) -> Path:
     """
     Resolves the classifier checkpoint path from custom argument, environment variable,
-    or standard location. Raises a clear error with placement instructions if missing.
+    or standard location. Prefers mobilenetv3_final.pth, then mobilenetv3_best.pth.
+    Raises a clear error with placement instructions if missing.
     """
     if custom_path:
         p = Path(custom_path)
@@ -37,11 +38,16 @@ def get_classifier_weights_path(custom_path: Optional[Union[str, Path]] = None) 
     if env_path and Path(env_path).is_file():
         return Path(env_path)
 
-    # Standard locations
+    base_dir = Path(__file__).resolve().parent.parent
+
+    # Standard locations, prioritizing mobilenetv3_final.pth then mobilenetv3_best.pth
     candidates = [
+        Path("vision/outputs/mobilenetv3_final.pth"),
+        Path("outputs/mobilenetv3_final.pth"),
+        base_dir / "outputs" / "mobilenetv3_final.pth",
         Path("vision/outputs/mobilenetv3_best.pth"),
         Path("outputs/mobilenetv3_best.pth"),
-        Path(__file__).resolve().parent.parent / "outputs" / "mobilenetv3_best.pth",
+        base_dir / "outputs" / "mobilenetv3_best.pth",
     ]
     for c in candidates:
         if c.is_file():
@@ -49,9 +55,9 @@ def get_classifier_weights_path(custom_path: Optional[Union[str, Path]] = None) 
 
     raise FileNotFoundError(
         "MobileNetV3 slot classifier weights not found! "
-        "Please train the model using 'python vision/src/train_classifier.py' or place the trained "
-        "checkpoint at 'vision/outputs/mobilenetv3_best.pth' or set the MOBILENETV3_WEIGHTS_PATH "
-        "environment variable pointing to the .pth file."
+        "Please train the model using 'python vision/src/train_classifier.py --protocol all' or place the trained "
+        "checkpoint at 'vision/outputs/mobilenetv3_final.pth' (or 'vision/outputs/mobilenetv3_best.pth') or set the "
+        "MOBILENETV3_WEIGHTS_PATH environment variable pointing to the .pth file."
     )
 
 
