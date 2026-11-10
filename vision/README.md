@@ -143,13 +143,16 @@ All figures below were measured directly from local test executions and evaluati
 ### 5.2 Large-Scale PKLot Training & Final Production Model Architecture
 
 To scale beyond small local sets without exhausting local laptop disk space:
-1. **Sampling Strategy**: `download_data.py --official-archive --frames-per-lot 150` downloads the official PKLot archive (4.56 GB) and samples $\ge 150$ frames per lot evenly across lots (`PUCPR`, `UFPR04`, `UFPR05`), weather conditions (`Sunny`, `Cloudy`, `Rainy`), and days, using stride sampling to prevent near-identical consecutive frames.
+1. **Sampling Strategy**: `download_data.py --official-archive --frames-per-lot 150` (or with `--archive-path <path>`) samples $\ge 150$ frames per lot evenly across lots (`PUCPR`, `UFPR04`, `UFPR05`), weather conditions (`Sunny`, `Cloudy`, `Rainy`), and days. Extracts ONLY full-frame pairs where both `.jpg` and `.xml` exist, prints member samples and folder structures, and asserts non-zero coverage per lot.
 2. **Preprocessing Safeguards**:
-   - `colab_train.ipynb` explicitly clones `smart-parking-platform`, logs `git rev-parse HEAD`, invalidates stale caches via `rm -rf vision/data/cache/crops`, and runs the shared `preprocess_slot_crop` pipeline across training, evaluation, and inference.
-3. **Protocols**:
+   - `colab_train.ipynb` explicitly clones `smart-parking-platform`, logs `git rev-parse HEAD`, invalidates stale caches via `rm -rf vision/data/cache/crops`, asserts dataset non-emptiness before training, and runs the shared `preprocess_slot_crop` pipeline across training, evaluation, and inference.
+3. **Execution Safety & Freshness Verification**:
+   - Every cell in `colab_train.ipynb` raises an exception on error, preventing downstream execution cascades.
+   - Google Drive backups occur immediately after LOO fold training and at the conclusion of the notebook, strictly verifying that checkpoints (`mobilenetv3_loo_fold{0,1,2}.pth`) and `repro_check.json` are freshly produced in the active session.
+4. **Protocols**:
    - **Leave-One-Lot-Out (LOO)** (`--protocol loo`): 3 folds for evaluating cross-facility domain transfer.
    - **Final Production Model** (`--protocol all`): Trains `mobilenetv3_final.pth` across **all three facilities** with validation partitioned strictly by day. This model powers backend live inference and the demo pipeline.
-4. **Reproducibility Verification**:
+5. **Reproducibility Verification**:
    - `colab_train.ipynb` exports 50 fixed test crop predictions per fold to `vision/outputs/repro_check.json`.
    - Local script `vision/scripts/verify_repro.py` re-evaluates the downloaded fold weights on those 50 test crops locally using `preprocess_slot_crop`, asserting 100% decision and bitwise parity.
 
