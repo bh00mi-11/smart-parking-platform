@@ -41,8 +41,12 @@ class FusionConfig:
     # Managed lot fresh exact threshold (seconds)
     managed_exact_age_threshold_sec: float = 5.0
 
-    # Normal distribution z-score for 80% symmetric interval (calibrated on tuning seeds [101, 102])
+    # Normal distribution z-score for 80% symmetric interval fallback
     z_80: float = 1.38
+
+    # Split-conformal calibration multipliers per age bucket and camera noise profile
+    # Computed as the 80% quantile of |residual| / fused_sd on tuning seeds [101, 102]
+    conformal_multipliers: Optional[Dict[str, Dict[str, float]]] = None
 
 
 def _to_utc_timestamp(dt: Union[datetime, str]) -> datetime:
@@ -248,10 +252,26 @@ def estimate_occupancy(
         final_age = 0.0
         final_source = freshest_anchor_source
     else:
-        # Standard 80% interval: [mean - 1.28*sd, mean + 1.28*sd] for occupied
-        # Free slots: [capacity - (mean + 1.28*sd), capacity - (mean - 1.28*sd)]
-        free_est_low = capacity - (occ_mean + config.z_80 * fused_sd)
-        free_est_high = capacity - (occ_mean - config.z_80 * fused_sd)
+        # Conformal interval multiplier resolution
+        multiplier = config.z_80
+        if config.conformal_multipliers is not None:
+            prof = zone.get("profile", "clean")
+            prof_dict = config.conformal_multipliers.get(prof, config.conformal_multipliers.get("clean", {}))
+            age_m = (freshest_anchor_age / 60.0) if freshest_anchor_source is not None else 60.0
+            if age_m < 5.0:
+                b_key = "<5min"
+            elif age_m < 15.0:
+                b_key = "5-15min"
+            elif age_m < 30.0:
+                b_key = "15-30min"
+            else:
+                b_key = ">30min"
+            multiplier = prof_dict.get(b_key, config.z_80)
+
+        # Standard 80% interval: [mean - multiplier*sd, mean + multiplier*sd] for occupied
+        # Free slots: [capacity - (mean + multiplier*sd), capacity - (mean - multiplier*sd)]
+        free_est_low = capacity - (occ_mean + multiplier * fused_sd)
+        free_est_high = capacity - (occ_mean - multiplier * fused_sd)
 
         free_low = int(math.floor(free_est_low))
         free_high = int(math.ceil(free_est_high))

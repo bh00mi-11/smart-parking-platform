@@ -25,14 +25,19 @@ import requests
 from tqdm import tqdm
 import socket
 
-# Fallback DNS resolution for UFPR server if local Windows DNS fails
+# Optional fallback DNS resolution for UFPR server only if standard getaddrinfo raises gaierror
+# SSL certificate validation remains strictly enabled (verify=True).
 _original_getaddrinfo = socket.getaddrinfo
-def _patched_getaddrinfo(host, port, *args, **kwargs):
-    if host in ['www.inf.ufpr.br', 'whiskey.c3sl.ufpr.br']:
-        return _original_getaddrinfo('200.17.202.113', port, *args, **kwargs)
-    return _original_getaddrinfo(host, port, *args, **kwargs)
+def _safe_fallback_getaddrinfo(host, port, *args, **kwargs):
+    try:
+        return _original_getaddrinfo(host, port, *args, **kwargs)
+    except socket.gaierror:
+        # Fallback resolution only if system DNS resolution fails completely
+        if host in ['www.inf.ufpr.br', 'whiskey.c3sl.ufpr.br']:
+            return _original_getaddrinfo('200.17.202.113', port, *args, **kwargs)
+        raise
 
-socket.getaddrinfo = _patched_getaddrinfo
+socket.getaddrinfo = _safe_fallback_getaddrinfo
 
 PKLOT_OFFICIAL_URL = "https://www.inf.ufpr.br/vri/databases/PKLot.tar.gz"
 

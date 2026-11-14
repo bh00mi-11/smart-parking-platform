@@ -51,8 +51,15 @@ def run_demo():
     print("DEMO: CAMERA FRAME TO OCCUPANCY UPDATE")
     print("=" * 65)
 
-    # 1. Managed Lot Demo
-    managed_img_p = sample_images[0]
+    # 1. Managed Lot Demo: select a clean UFPR04 / UFPR05 frame as default
+    managed_img_p = None
+    for candidate in sample_images:
+        cand_str = str(candidate).replace("\\", "/")
+        if "UFPR04" in cand_str or "UFPR05" in cand_str:
+            managed_img_p = candidate
+            break
+    if managed_img_p is None:
+        managed_img_p = sample_images[0]
     managed_xml_p = managed_img_p.with_suffix(".xml")
 
     if managed_xml_p.exists():
