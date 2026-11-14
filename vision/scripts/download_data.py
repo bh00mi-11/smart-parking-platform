@@ -18,10 +18,21 @@ import zipfile
 import json
 import argparse
 from collections import defaultdict
+from typing import Optional
 import xml.etree.ElementTree as ET
 from pathlib import Path
 import requests
 from tqdm import tqdm
+import socket
+
+# Fallback DNS resolution for UFPR server if local Windows DNS fails
+_original_getaddrinfo = socket.getaddrinfo
+def _patched_getaddrinfo(host, port, *args, **kwargs):
+    if host in ['www.inf.ufpr.br', 'whiskey.c3sl.ufpr.br']:
+        return _original_getaddrinfo('200.17.202.113', port, *args, **kwargs)
+    return _original_getaddrinfo(host, port, *args, **kwargs)
+
+socket.getaddrinfo = _patched_getaddrinfo
 
 PKLOT_OFFICIAL_URL = "https://www.inf.ufpr.br/vri/databases/PKLot.tar.gz"
 
@@ -193,110 +204,207 @@ def setup_pklot_full_frames(data_dir: Path):
         else:
             print(f"[PKLot] Warning: No spot annotation found for {fname}")
 
-def download_and_extract_pklot_archive(
-    data_dir: Path,
-    frames_per_lot: int = 150,
-    stride_sampling: bool = True
+def extract_sampled_pklot_archive(
+    archive_path: Path,
+    pklot_dir: Path,
+    frames_per_lot: int = 150
 ):
     """
-    Downloads the official PKLot.tar.gz archive (4.56 GB) and extracts a stratified,
-    evenly sampled subset of frames across lots (PUCPR, UFPR04, UFPR05), weathers,
-    and days using stride sampling to prevent identical consecutive frames.
+    Extracts a stratified, evenly sampled subset of PKLot full-frame images
+    and XMLs across lots (PUCPR, UFPR04, UFPR05), weathers, and days.
+    Supports .tar.gz / .tar and .zip archives.
+    Requires each selected .jpg to have a corresponding .xml.
     """
-    pklot_dir = data_dir / "PKLot"
     pklot_dir.mkdir(parents=True, exist_ok=True)
-    archive_path = data_dir / "PKLot.tar.gz"
+    is_tar = str(archive_path).endswith((".tar.gz", ".tgz", ".tar"))
+    is_zip = str(archive_path).endswith(".zip")
 
-    print("=" * 65)
-    print("PKLot Official Archive Downloader & Sampler")
-    print(f"Target frames per lot: {frames_per_lot} (Stride sampling: {stride_sampling})")
-    print("=" * 65)
+    if not is_tar and not is_zip:
+        raise ValueError(f"Unsupported archive format: {archive_path.name}. Must be .tar.gz, .tar, or .zip")
 
-    download_file(PKLOT_OFFICIAL_URL, archive_path, "PKLot Official Archive (4.56 GB)")
+    # 1. Inspect archive members and list first 20 names
+    print(f"[PKLot] Reading members from {archive_path.name}...")
+    if is_tar:
+        archive_obj = tarfile.open(archive_path, "r:*")
+        all_member_names = [m.name for m in archive_obj.getmembers() if not m.isdir()]
+    else:
+        archive_obj = zipfile.ZipFile(archive_path, "r")
+        all_member_names = [m for m in archive_obj.namelist() if not m.endswith("/")]
 
-    print(f"[PKLot] Indexing archive members in {archive_path.name}...")
-    # Map (lot, weather, day) -> list of base image member paths
-    groups = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    print("\n--- Detected Archive Member Sample (First 20 Names) ---")
+    for name in all_member_names[:20]:
+        print(f"  {name}")
+    print("------------------------------------------------------\n")
 
-    with tarfile.open(archive_path, "r:gz") as tar:
-        for member in tar.getmembers():
-            if member.name.endswith(".jpg"):
-                # Format: PKLot/PKLot/{Lot}/{Weather}/{Day}/{Image}.jpg
-                p = Path(member.name)
-                parts = p.parts
-                # Find where PUCPR/UFPR04/UFPR05 occurs
-                lot = None
-                for candidate in ["PUCPR", "UFPR04", "UFPR05"]:
-                    if candidate in parts:
-                        lot = candidate
-                        break
-                if lot is not None:
-                    idx = parts.index(lot)
-                    if len(parts) >= idx + 4:
-                        weather = parts[idx + 1]
-                        day = parts[idx + 2]
-                        fname = parts[idx + 3]
-                        groups[lot][(weather, day)].append(member.name)
+    # Map members into set of all member names for fast XML lookup
+    member_name_set = set(all_member_names)
 
-        # For each lot, sample frames evenly across available weather/day combinations
-        selected_members = set()
-        for lot, day_groups in groups.items():
-            all_lot_members = []
-            # Sort each day's images temporally
-            for w_d in sorted(day_groups.keys()):
-                day_groups[w_d].sort()
-                all_lot_members.append(day_groups[w_d])
+    # 2. Group full-frame jpg files having corresponding xml files
+    # Structure: groups[lot][(weather, day)] -> list of member paths
+    groups = defaultdict(lambda: defaultdict(list))
+    total_valid_pairs = 0
+    missing_xml_count = 0
+    detected_lots = set()
 
-            total_lot_frames = sum(len(lst) for lst in all_lot_members)
-            target = min(frames_per_lot, total_lot_frames)
+    for name in all_member_names:
+        if name.endswith(".jpg"):
+            xml_name = name[:-4] + ".xml"
+            if xml_name not in member_name_set:
+                missing_xml_count += 1
+                continue
 
-            # Stride sampling across days
-            lot_chosen = []
-            if stride_sampling and total_lot_frames > target:
-                stride = max(1, total_lot_frames // target)
-                flat_ordered = []
-                for lst in all_lot_members:
-                    flat_ordered.extend(lst)
-                for i in range(0, len(flat_ordered), stride):
-                    lot_chosen.append(flat_ordered[i])
-                    if len(lot_chosen) >= target:
-                        break
-            else:
-                flat_ordered = []
-                for lst in all_lot_members:
-                    flat_ordered.extend(lst)
-                lot_chosen = flat_ordered[:target]
+            # Identify lot, weather, day
+            parts = Path(name).parts
+            lot = None
+            for candidate in ["PUCPR", "UFPR04", "UFPR05"]:
+                if candidate in parts:
+                    lot = candidate
+                    break
+            if lot is not None:
+                idx = parts.index(lot)
+                if len(parts) >= idx + 4:
+                    weather = parts[idx + 1]
+                    day = parts[idx + 2]
+                    groups[lot][(weather, day)].append(name)
+                    total_valid_pairs += 1
+                    detected_lots.add(lot)
 
-            print(f"[PKLot] Lot {lot}: Selected {len(lot_chosen)} / {total_lot_frames} frames across {len(day_groups)} weather-days.")
-            for m_name in lot_chosen:
-                selected_members.add(m_name)
-                # Also include XML
-                selected_members.add(m_name.replace(".jpg", ".xml"))
+    print(f"[PKLot] Folder layout parsed. Found {total_valid_pairs} valid jpg+xml pairs across lots: {sorted(list(detected_lots))}")
+    if missing_xml_count > 0:
+        print(f"[PKLot] Warning: Skipped {missing_xml_count} .jpg files that had no corresponding .xml")
 
-        print(f"[PKLot] Extracting {len(selected_members)} selected image/XML files to {pklot_dir}...")
-        for member in tqdm(tar.getmembers(), desc="Extracting sampled PKLot"):
-            if member.name in selected_members:
-                # Strip leading PKLot/PKLot if needed so target is PKLot/{Lot}/{Weather}/{Day}/{File}
-                p = Path(member.name)
-                parts = p.parts
+    # Check that all required lots have frames
+    required_lots = ["PUCPR", "UFPR04", "UFPR05"]
+    for lot in required_lots:
+        lot_frame_count = sum(len(lst) for lst in groups[lot].values())
+        if lot_frame_count == 0:
+            archive_obj.close()
+            raise RuntimeError(
+                f"[PKLot Sampler Error] Lot '{lot}' has 0 valid jpg+xml frames in archive! "
+                f"Available lots: {sorted(list(detected_lots))}"
+            )
+
+    # 3. Stratified Stride Sampling per (lot, weather, day)
+    selected_jpg_members = []
+    print("\n=== Sampling PKLot Frames per Lot, Weather, and Day ===")
+    for lot in required_lots:
+        weather_days = groups[lot]
+        lot_chosen = []
+
+        # Sort weather and day combinations deterministically
+        sorted_keys = sorted(weather_days.keys())
+        all_lot_frames = []
+        for k in sorted_keys:
+            weather_days[k].sort()
+            all_lot_frames.extend(weather_days[k])
+
+        total_frames = len(all_lot_frames)
+        target = min(frames_per_lot, total_frames)
+
+        # Calculate stride per (weather, day) bucket or across flattened sorted list
+        if total_frames > target:
+            # Stride evenly across the flattened ordered frames
+            stride = total_frames / float(target)
+            for i in range(target):
+                idx = int(i * stride)
+                lot_chosen.append(all_lot_frames[idx])
+        else:
+            lot_chosen = list(all_lot_frames)
+
+        # Print breakdown per weather and day for this lot
+        chosen_by_wd = defaultdict(int)
+        for chosen_name in lot_chosen:
+            parts = Path(chosen_name).parts
+            idx = parts.index(lot)
+            w = parts[idx + 1]
+            d = parts[idx + 2]
+            chosen_by_wd[(w, d)] += 1
+
+        print(f"\nLot '{lot}': Selected {len(lot_chosen)} / {total_frames} frames (target {frames_per_lot}):")
+        for (w, d) in sorted(chosen_by_wd.keys()):
+            avail = len(weather_days[(w, d)])
+            print(f"  - Weather: {w:<8} | Day: {d:<12} | Sampled: {chosen_by_wd[(w, d)]:<3} / {avail:<3} frames")
+
+        selected_jpg_members.extend(lot_chosen)
+
+    # Verify that every selected jpg has its xml in the archive
+    selected_member_set = set()
+    for jpg_name in selected_jpg_members:
+        xml_name = jpg_name[:-4] + ".xml"
+        if xml_name not in member_name_set:
+            archive_obj.close()
+            raise RuntimeError(f"[PKLot Sampler Error] Image {jpg_name} is missing corresponding XML {xml_name} in archive!")
+        selected_member_set.add(jpg_name)
+        selected_member_set.add(xml_name)
+
+    print(f"\n[PKLot] Extracting {len(selected_member_set)} files ({len(selected_jpg_members)} pairs) to {pklot_dir}...")
+
+    # 4. Extract ONLY the sampled pairs directly into pklot_dir
+    if is_tar:
+        for member in tqdm(archive_obj.getmembers(), desc="Extracting sampled PKLot"):
+            if member.name in selected_member_set:
+                parts = Path(member.name).parts
                 for candidate in ["PUCPR", "UFPR04", "UFPR05"]:
                     if candidate in parts:
                         idx = parts.index(candidate)
                         rel_path = Path(*parts[idx:])
                         out_target = pklot_dir / rel_path
                         out_target.parent.mkdir(parents=True, exist_ok=True)
-                        f_in = tar.extractfile(member)
+                        f_in = archive_obj.extractfile(member)
                         if f_in is not None:
                             with open(out_target, "wb") as f_out:
                                 f_out.write(f_in.read())
                         break
+        archive_obj.close()
+    else:
+        for m_name in tqdm(selected_member_set, desc="Extracting sampled PKLot"):
+            parts = Path(m_name).parts
+            for candidate in ["PUCPR", "UFPR04", "UFPR05"]:
+                if candidate in parts:
+                    idx = parts.index(candidate)
+                    rel_path = Path(*parts[idx:])
+                    out_target = pklot_dir / rel_path
+                    out_target.parent.mkdir(parents=True, exist_ok=True)
+                    with archive_obj.open(m_name, "r") as f_in:
+                        with open(out_target, "wb") as f_out:
+                            f_out.write(f_in.read())
+                    break
+        archive_obj.close()
 
-    print(f"[PKLot] Successfully extracted sampled PKLot to {pklot_dir}")
+    print(f"[PKLot] Successfully extracted {len(selected_jpg_members)} pairs to {pklot_dir}")
+
+
+def download_and_extract_pklot_archive(
+    data_dir: Path,
+    archive_path: Optional[Path] = None,
+    frames_per_lot: int = 150
+):
+    """
+    Downloads or uses an existing archive, then runs extract_sampled_pklot_archive.
+    """
+    pklot_dir = data_dir / "PKLot"
+    pklot_dir.mkdir(parents=True, exist_ok=True)
+
+    if archive_path is not None:
+        target_archive = Path(archive_path)
+        if not target_archive.exists():
+            raise FileNotFoundError(f"Specified archive not found: {target_archive}")
+        print(f"[PKLot] Using existing local archive: {target_archive} (Download skipped)")
+    else:
+        target_archive = data_dir / "PKLot.tar.gz"
+        print("=" * 65)
+        print("PKLot Official Archive Downloader & Sampler")
+        print(f"Target frames per lot: {frames_per_lot}")
+        print("=" * 65)
+        download_file(PKLOT_OFFICIAL_URL, target_archive, "PKLot Official Archive (4.56 GB)")
+
+    extract_sampled_pklot_archive(target_archive, pklot_dir, frames_per_lot=frames_per_lot)
 
 
 def main():
     parser = argparse.ArgumentParser(description="Download and setup parking datasets")
     parser.add_argument("--official-archive", action="store_true", help="Download and sample official PKLot.tar.gz archive (for Colab)")
+    parser.add_argument("--archive-path", type=str, default=None, help="Path to existing local PKLot archive (.tar.gz, .tar, or .zip) to sample without downloading")
     parser.add_argument("--frames-per-lot", type=int, default=150, help="Frames to sample per lot from official PKLot archive")
     args = parser.parse_args()
 
@@ -304,9 +412,10 @@ def main():
     data_dir = root / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    if args.official_archive:
-        print("=== Official PKLot Archive Download & Sampling Mode ===")
-        download_and_extract_pklot_archive(data_dir, frames_per_lot=args.frames_per_lot, stride_sampling=True)
+    if args.official_archive or args.archive_path:
+        print("=== Official PKLot Archive Sampler Mode ===")
+        archive_p = Path(args.archive_path) if args.archive_path else None
+        download_and_extract_pklot_archive(data_dir, archive_path=archive_p, frames_per_lot=args.frames_per_lot)
     else:
         print("=== Lightweight Sample Mode (Local Development) ===")
         setup_metapklot_annotations(data_dir)

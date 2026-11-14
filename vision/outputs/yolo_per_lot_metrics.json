@@ -1,222 +1,1314 @@
 {
   "PUCPR": {
-    "num_images": 4,
+    "num_images": 30,
     "sample_size_note": "Small sample sizes make per-lot figures unstable. Using all available local frames.",
     "imgsz_640": {
-      "num_images": 4,
-      "total_annotated_slots": 780,
-      "mean_abs_error": 105.5,
+      "num_images": 30,
+      "total_annotated_slots": 3000,
+      "mean_abs_error": 26.5,
       "frames": [
         {
+          "image": "2012-09-12_06_05_16.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-09-12_08_36_50.jpg",
+          "total_slots": 100,
+          "true_occupied": 95,
+          "pred_count": 0,
+          "abs_error": 95
+        },
+        {
           "image": "2012-10-16_06_21_43.jpg",
-          "total_slots": 195,
+          "total_slots": 100,
+          "true_occupied": 2,
+          "pred_count": 0,
+          "abs_error": 2
+        },
+        {
+          "image": "2012-10-16_09_33_29.jpg",
+          "total_slots": 100,
+          "true_occupied": 96,
+          "pred_count": 1,
+          "abs_error": 95
+        },
+        {
+          "image": "2012-10-16_12_03_37.jpg",
+          "total_slots": 100,
+          "true_occupied": 66,
+          "pred_count": 1,
+          "abs_error": 65
+        },
+        {
+          "image": "2012-10-16_14_33_45.jpg",
+          "total_slots": 100,
+          "true_occupied": 74,
+          "pred_count": 2,
+          "abs_error": 72
+        },
+        {
+          "image": "2012-10-16_16_58_52.jpg",
+          "total_slots": 100,
+          "true_occupied": 72,
+          "pred_count": 1,
+          "abs_error": 71
+        },
+        {
+          "image": "2012-09-28_08_16_03.jpg",
+          "total_slots": 100,
+          "true_occupied": 81,
+          "pred_count": 0,
+          "abs_error": 81
+        },
+        {
+          "image": "2012-09-28_10_46_10.jpg",
+          "total_slots": 100,
+          "true_occupied": 89,
+          "pred_count": 0,
+          "abs_error": 89
+        },
+        {
+          "image": "2012-09-28_13_16_17.jpg",
+          "total_slots": 100,
+          "true_occupied": 46,
+          "pred_count": 0,
+          "abs_error": 46
+        },
+        {
+          "image": "2012-09-28_15_46_24.jpg",
+          "total_slots": 100,
+          "true_occupied": 74,
+          "pred_count": 0,
+          "abs_error": 74
+        },
+        {
+          "image": "2012-10-05_08_17_49.jpg",
+          "total_slots": 100,
+          "true_occupied": 90,
+          "pred_count": 1,
+          "abs_error": 89
+        },
+        {
+          "image": "2012-10-12_07_07_32.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-12_09_37_39.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-12_12_07_45.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-12_14_37_52.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-12_17_07_58.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 1,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-10-13_06_43_35.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
+          "pred_count": 0,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-10-13_09_13_42.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-13_11_43_48.jpg",
+          "total_slots": 100,
+          "true_occupied": 6,
+          "pred_count": 1,
+          "abs_error": 5
+        },
+        {
+          "image": "2012-10-13_14_13_54.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
+          "pred_count": 0,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-10-13_16_44_00.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
+          "pred_count": 0,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-10-14_06_39_37.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-14_09_04_43.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-14_11_34_50.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
+          "pred_count": 0,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-10-14_14_04_57.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
+          "pred_count": 0,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-10-14_16_35_03.jpg",
+          "total_slots": 100,
           "true_occupied": 3,
           "pred_count": 0,
           "abs_error": 3
         },
         {
-          "image": "2012-10-25_19_33_54.jpg",
-          "total_slots": 195,
-          "true_occupied": 188,
+          "image": "2012-10-28_07_16_47.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
           "pred_count": 0,
-          "abs_error": 188
+          "abs_error": 1
         },
         {
-          "image": "2012-09-11_15_16_58.jpg",
-          "total_slots": 195,
-          "true_occupied": 115,
+          "image": "2012-10-28_09_41_54.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
           "pred_count": 0,
-          "abs_error": 115
+          "abs_error": 1
         },
         {
-          "image": "2012-09-11_15_27_08.jpg",
-          "total_slots": 195,
-          "true_occupied": 116,
+          "image": "2012-10-28_12_12_02.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
           "pred_count": 0,
-          "abs_error": 116
+          "abs_error": 0
         }
       ]
     },
     "imgsz_1280": {
-      "num_images": 4,
-      "total_annotated_slots": 780,
-      "mean_abs_error": 79.0,
+      "num_images": 30,
+      "total_annotated_slots": 3000,
+      "mean_abs_error": 22.1,
       "frames": [
         {
+          "image": "2012-09-12_06_05_16.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-09-12_08_36_50.jpg",
+          "total_slots": 100,
+          "true_occupied": 95,
+          "pred_count": 7,
+          "abs_error": 88
+        },
+        {
           "image": "2012-10-16_06_21_43.jpg",
-          "total_slots": 195,
-          "true_occupied": 3,
+          "total_slots": 100,
+          "true_occupied": 2,
           "pred_count": 1,
-          "abs_error": 2
+          "abs_error": 1
         },
         {
-          "image": "2012-10-25_19_33_54.jpg",
-          "total_slots": 195,
-          "true_occupied": 188,
-          "pred_count": 25,
-          "abs_error": 163
+          "image": "2012-10-16_09_33_29.jpg",
+          "total_slots": 100,
+          "true_occupied": 96,
+          "pred_count": 6,
+          "abs_error": 90
         },
         {
-          "image": "2012-09-11_15_16_58.jpg",
-          "total_slots": 195,
-          "true_occupied": 115,
-          "pred_count": 40,
-          "abs_error": 75
+          "image": "2012-10-16_12_03_37.jpg",
+          "total_slots": 100,
+          "true_occupied": 66,
+          "pred_count": 31,
+          "abs_error": 35
         },
         {
-          "image": "2012-09-11_15_27_08.jpg",
-          "total_slots": 195,
-          "true_occupied": 116,
-          "pred_count": 40,
-          "abs_error": 76
+          "image": "2012-10-16_14_33_45.jpg",
+          "total_slots": 100,
+          "true_occupied": 74,
+          "pred_count": 20,
+          "abs_error": 54
+        },
+        {
+          "image": "2012-10-16_16_58_52.jpg",
+          "total_slots": 100,
+          "true_occupied": 72,
+          "pred_count": 19,
+          "abs_error": 53
+        },
+        {
+          "image": "2012-09-28_08_16_03.jpg",
+          "total_slots": 100,
+          "true_occupied": 81,
+          "pred_count": 2,
+          "abs_error": 79
+        },
+        {
+          "image": "2012-09-28_10_46_10.jpg",
+          "total_slots": 100,
+          "true_occupied": 89,
+          "pred_count": 9,
+          "abs_error": 80
+        },
+        {
+          "image": "2012-09-28_13_16_17.jpg",
+          "total_slots": 100,
+          "true_occupied": 46,
+          "pred_count": 45,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-09-28_15_46_24.jpg",
+          "total_slots": 100,
+          "true_occupied": 74,
+          "pred_count": 15,
+          "abs_error": 59
+        },
+        {
+          "image": "2012-10-05_08_17_49.jpg",
+          "total_slots": 100,
+          "true_occupied": 90,
+          "pred_count": 0,
+          "abs_error": 90
+        },
+        {
+          "image": "2012-10-12_07_07_32.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-12_09_37_39.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-12_12_07_45.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-12_14_37_52.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 1,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-10-12_17_07_58.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-13_06_43_35.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
+          "pred_count": 1,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-13_09_13_42.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-13_11_43_48.jpg",
+          "total_slots": 100,
+          "true_occupied": 6,
+          "pred_count": 24,
+          "abs_error": 18
+        },
+        {
+          "image": "2012-10-13_14_13_54.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
+          "pred_count": 6,
+          "abs_error": 5
+        },
+        {
+          "image": "2012-10-13_16_44_00.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
+          "pred_count": 5,
+          "abs_error": 4
+        },
+        {
+          "image": "2012-10-14_06_39_37.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-14_09_04_43.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-10-14_11_34_50.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
+          "pred_count": 0,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-10-14_14_04_57.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
+          "pred_count": 2,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-10-14_16_35_03.jpg",
+          "total_slots": 100,
+          "true_occupied": 3,
+          "pred_count": 2,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-10-28_07_16_47.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
+          "pred_count": 0,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-10-28_09_41_54.jpg",
+          "total_slots": 100,
+          "true_occupied": 1,
+          "pred_count": 0,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-10-28_12_12_02.jpg",
+          "total_slots": 100,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
         }
       ]
     }
   },
   "UFPR04": {
-    "num_images": 4,
+    "num_images": 30,
     "sample_size_note": "Small sample sizes make per-lot figures unstable. Using all available local frames.",
     "imgsz_640": {
-      "num_images": 4,
-      "total_annotated_slots": 146,
-      "mean_abs_error": 1.25,
+      "num_images": 30,
+      "total_annotated_slots": 840,
+      "mean_abs_error": 3.0,
       "frames": [
         {
-          "image": "2012-12-22_15_55_12.jpg",
-          "total_slots": 37,
-          "true_occupied": 0,
-          "pred_count": 0,
-          "abs_error": 0
-        },
-        {
-          "image": "2012-12-07_16_42_25.jpg",
-          "total_slots": 37,
-          "true_occupied": 35,
-          "pred_count": 32,
-          "abs_error": 3
-        },
-        {
-          "image": "2012-12-28_09_05_04.jpg",
-          "total_slots": 35,
-          "true_occupied": 0,
-          "pred_count": 1,
-          "abs_error": 1
-        },
-        {
-          "image": "2012-12-26_08_25_03.jpg",
-          "total_slots": 37,
-          "true_occupied": 0,
-          "pred_count": 1,
-          "abs_error": 1
-        }
-      ]
-    },
-    "imgsz_1280": {
-      "num_images": 4,
-      "total_annotated_slots": 146,
-      "mean_abs_error": 6.25,
-      "frames": [
-        {
-          "image": "2012-12-22_15_55_12.jpg",
-          "total_slots": 37,
-          "true_occupied": 0,
-          "pred_count": 0,
-          "abs_error": 0
-        },
-        {
-          "image": "2012-12-07_16_42_25.jpg",
-          "total_slots": 37,
-          "true_occupied": 35,
-          "pred_count": 58,
-          "abs_error": 23
-        },
-        {
-          "image": "2012-12-28_09_05_04.jpg",
-          "total_slots": 35,
-          "true_occupied": 0,
-          "pred_count": 1,
-          "abs_error": 1
-        },
-        {
-          "image": "2012-12-26_08_25_03.jpg",
-          "total_slots": 37,
-          "true_occupied": 0,
-          "pred_count": 1,
-          "abs_error": 1
-        }
-      ]
-    }
-  },
-  "UFPR05": {
-    "num_images": 4,
-    "sample_size_note": "Small sample sizes make per-lot figures unstable. Using all available local frames.",
-    "imgsz_640": {
-      "num_images": 4,
-      "total_annotated_slots": 184,
-      "mean_abs_error": 4.0,
-      "frames": [
-        {
-          "image": "2013-04-12_15_35_10.jpg",
-          "total_slots": 46,
-          "true_occupied": 45,
-          "pred_count": 34,
+          "image": "2012-12-12_10_00_05.jpg",
+          "total_slots": 28,
+          "true_occupied": 28,
+          "pred_count": 39,
           "abs_error": 11
         },
         {
-          "image": "2013-04-14_15_30_10.jpg",
-          "total_slots": 46,
+          "image": "2012-12-12_12_05_07.jpg",
+          "total_slots": 28,
+          "true_occupied": 28,
+          "pred_count": 46,
+          "abs_error": 18
+        },
+        {
+          "image": "2012-12-14_11_15_07.jpg",
+          "total_slots": 28,
+          "true_occupied": 28,
+          "pred_count": 37,
+          "abs_error": 9
+        },
+        {
+          "image": "2012-12-14_13_20_09.jpg",
+          "total_slots": 28,
+          "true_occupied": 24,
+          "pred_count": 34,
+          "abs_error": 10
+        },
+        {
+          "image": "2012-12-14_15_30_12.jpg",
+          "total_slots": 28,
           "true_occupied": 27,
-          "pred_count": 29,
+          "pred_count": 36,
+          "abs_error": 9
+        },
+        {
+          "image": "2012-12-14_17_35_14.jpg",
+          "total_slots": 28,
+          "true_occupied": 25,
+          "pred_count": 30,
+          "abs_error": 5
+        },
+        {
+          "image": "2012-12-14_19_40_17.jpg",
+          "total_slots": 28,
+          "true_occupied": 23,
+          "pred_count": 25,
           "abs_error": 2
         },
         {
-          "image": "2013-02-22_06_05_00.jpg",
-          "total_slots": 46,
+          "image": "2012-12-15_08_10_03.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-15_12_35_08.jpg",
+          "total_slots": 28,
+          "true_occupied": 5,
+          "pred_count": 8,
+          "abs_error": 3
+        },
+        {
+          "image": "2012-12-15_14_40_11.jpg",
+          "total_slots": 28,
           "true_occupied": 2,
           "pred_count": 2,
           "abs_error": 0
         },
         {
-          "image": "2013-04-16_07_45_02.jpg",
-          "total_slots": 46,
-          "true_occupied": 45,
-          "pred_count": 42,
+          "image": "2012-12-16_11_40_07.jpg",
+          "total_slots": 28,
+          "true_occupied": 1,
+          "pred_count": 1,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-17_11_45_07.jpg",
+          "total_slots": 28,
+          "true_occupied": 28,
+          "pred_count": 34,
+          "abs_error": 6
+        },
+        {
+          "image": "2012-12-22_10_55_06.jpg",
+          "total_slots": 28,
+          "true_occupied": 1,
+          "pred_count": 2,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-12-22_13_00_09.jpg",
+          "total_slots": 28,
+          "true_occupied": 1,
+          "pred_count": 1,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-22_15_05_11.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-22_17_15_14.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-22_19_20_16.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-27_11_20_06.jpg",
+          "total_slots": 28,
+          "true_occupied": 2,
+          "pred_count": 5,
+          "abs_error": 3
+        },
+        {
+          "image": "2012-12-27_13_25_09.jpg",
+          "total_slots": 28,
+          "true_occupied": 3,
+          "pred_count": 5,
+          "abs_error": 2
+        },
+        {
+          "image": "2012-12-28_10_10_05.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-28_12_15_08.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 1,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-12-28_14_20_10.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 1,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-12-28_16_30_12.jpg",
+          "total_slots": 28,
+          "true_occupied": 1,
+          "pred_count": 2,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-12-28_18_35_14.jpg",
+          "total_slots": 28,
+          "true_occupied": 1,
+          "pred_count": 2,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-12-28_20_40_17.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 1,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-12-29_11_05_33.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 2,
+          "abs_error": 2
+        },
+        {
+          "image": "2012-12-29_13_15_36.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 1,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-12-29_15_20_38.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-29_17_25_41.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2013-01-15_15_21_53.jpg",
+          "total_slots": 28,
+          "true_occupied": 13,
+          "pred_count": 16,
           "abs_error": 3
         }
       ]
     },
     "imgsz_1280": {
-      "num_images": 4,
-      "total_annotated_slots": 184,
-      "mean_abs_error": 8.75,
+      "num_images": 30,
+      "total_annotated_slots": 840,
+      "mean_abs_error": 9.67,
       "frames": [
         {
-          "image": "2013-04-12_15_35_10.jpg",
-          "total_slots": 46,
-          "true_occupied": 45,
-          "pred_count": 54,
-          "abs_error": 9
+          "image": "2012-12-12_10_00_05.jpg",
+          "total_slots": 28,
+          "true_occupied": 28,
+          "pred_count": 67,
+          "abs_error": 39
         },
         {
-          "image": "2013-04-14_15_30_10.jpg",
-          "total_slots": 46,
+          "image": "2012-12-12_12_05_07.jpg",
+          "total_slots": 28,
+          "true_occupied": 28,
+          "pred_count": 67,
+          "abs_error": 39
+        },
+        {
+          "image": "2012-12-14_11_15_07.jpg",
+          "total_slots": 28,
+          "true_occupied": 28,
+          "pred_count": 70,
+          "abs_error": 42
+        },
+        {
+          "image": "2012-12-14_13_20_09.jpg",
+          "total_slots": 28,
+          "true_occupied": 24,
+          "pred_count": 55,
+          "abs_error": 31
+        },
+        {
+          "image": "2012-12-14_15_30_12.jpg",
+          "total_slots": 28,
           "true_occupied": 27,
-          "pred_count": 26,
+          "pred_count": 68,
+          "abs_error": 41
+        },
+        {
+          "image": "2012-12-14_17_35_14.jpg",
+          "total_slots": 28,
+          "true_occupied": 25,
+          "pred_count": 44,
+          "abs_error": 19
+        },
+        {
+          "image": "2012-12-14_19_40_17.jpg",
+          "total_slots": 28,
+          "true_occupied": 23,
+          "pred_count": 34,
+          "abs_error": 11
+        },
+        {
+          "image": "2012-12-15_08_10_03.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-15_12_35_08.jpg",
+          "total_slots": 28,
+          "true_occupied": 5,
+          "pred_count": 9,
+          "abs_error": 4
+        },
+        {
+          "image": "2012-12-15_14_40_11.jpg",
+          "total_slots": 28,
+          "true_occupied": 2,
+          "pred_count": 2,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-16_11_40_07.jpg",
+          "total_slots": 28,
+          "true_occupied": 1,
+          "pred_count": 3,
+          "abs_error": 2
+        },
+        {
+          "image": "2012-12-17_11_45_07.jpg",
+          "total_slots": 28,
+          "true_occupied": 28,
+          "pred_count": 65,
+          "abs_error": 37
+        },
+        {
+          "image": "2012-12-22_10_55_06.jpg",
+          "total_slots": 28,
+          "true_occupied": 1,
+          "pred_count": 2,
           "abs_error": 1
         },
         {
-          "image": "2013-02-22_06_05_00.jpg",
-          "total_slots": 46,
+          "image": "2012-12-22_13_00_09.jpg",
+          "total_slots": 28,
+          "true_occupied": 1,
+          "pred_count": 1,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-22_15_05_11.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-22_17_15_14.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-22_19_20_16.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-27_11_20_06.jpg",
+          "total_slots": 28,
           "true_occupied": 2,
+          "pred_count": 6,
+          "abs_error": 4
+        },
+        {
+          "image": "2012-12-27_13_25_09.jpg",
+          "total_slots": 28,
+          "true_occupied": 3,
+          "pred_count": 5,
+          "abs_error": 2
+        },
+        {
+          "image": "2012-12-28_10_10_05.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-28_12_15_08.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-28_14_20_10.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-28_16_30_12.jpg",
+          "total_slots": 28,
+          "true_occupied": 1,
+          "pred_count": 4,
+          "abs_error": 3
+        },
+        {
+          "image": "2012-12-28_18_35_14.jpg",
+          "total_slots": 28,
+          "true_occupied": 1,
+          "pred_count": 2,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-12-28_20_40_17.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2012-12-29_11_05_33.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
           "pred_count": 1,
           "abs_error": 1
         },
         {
-          "image": "2013-04-16_07_45_02.jpg",
-          "total_slots": 46,
-          "true_occupied": 45,
-          "pred_count": 69,
+          "image": "2012-12-29_13_15_36.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 1,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-12-29_15_20_38.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 1,
+          "abs_error": 1
+        },
+        {
+          "image": "2012-12-29_17_25_41.jpg",
+          "total_slots": 28,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2013-01-15_15_21_53.jpg",
+          "total_slots": 28,
+          "true_occupied": 13,
+          "pred_count": 24,
+          "abs_error": 11
+        }
+      ]
+    }
+  },
+  "UFPR05": {
+    "num_images": 30,
+    "sample_size_note": "Small sample sizes make per-lot figures unstable. Using all available local frames.",
+    "imgsz_640": {
+      "num_images": 30,
+      "total_annotated_slots": 1200,
+      "mean_abs_error": 3.97,
+      "frames": [
+        {
+          "image": "2013-02-22_17_10_11.jpg",
+          "total_slots": 40,
+          "true_occupied": 28,
+          "pred_count": 38,
+          "abs_error": 10
+        },
+        {
+          "image": "2013-02-26_13_49_34.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 41,
+          "abs_error": 1
+        },
+        {
+          "image": "2013-02-26_16_24_37.jpg",
+          "total_slots": 40,
+          "true_occupied": 39,
+          "pred_count": 38,
+          "abs_error": 1
+        },
+        {
+          "image": "2013-02-26_18_44_40.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 32,
+          "abs_error": 8
+        },
+        {
+          "image": "2013-03-05_12_15_07.jpg",
+          "total_slots": 40,
+          "true_occupied": 31,
+          "pred_count": 46,
+          "abs_error": 15
+        },
+        {
+          "image": "2013-03-05_18_25_14.jpg",
+          "total_slots": 40,
+          "true_occupied": 37,
+          "pred_count": 40,
+          "abs_error": 3
+        },
+        {
+          "image": "2013-03-09_08_20_02.jpg",
+          "total_slots": 40,
+          "true_occupied": 2,
+          "pred_count": 3,
+          "abs_error": 1
+        },
+        {
+          "image": "2013-03-09_10_35_05.jpg",
+          "total_slots": 40,
+          "true_occupied": 8,
+          "pred_count": 9,
+          "abs_error": 1
+        },
+        {
+          "image": "2013-03-09_12_55_08.jpg",
+          "total_slots": 40,
+          "true_occupied": 5,
+          "pred_count": 5,
+          "abs_error": 0
+        },
+        {
+          "image": "2013-03-09_15_15_10.jpg",
+          "total_slots": 40,
+          "true_occupied": 4,
+          "pred_count": 6,
+          "abs_error": 2
+        },
+        {
+          "image": "2013-03-09_17_30_13.jpg",
+          "total_slots": 40,
+          "true_occupied": 2,
+          "pred_count": 2,
+          "abs_error": 0
+        },
+        {
+          "image": "2013-03-12_07_25_01.jpg",
+          "total_slots": 40,
+          "true_occupied": 38,
+          "pred_count": 36,
+          "abs_error": 2
+        },
+        {
+          "image": "2013-03-12_12_55_08.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 41,
+          "abs_error": 1
+        },
+        {
+          "image": "2013-03-12_15_10_10.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 42,
+          "abs_error": 2
+        },
+        {
+          "image": "2013-03-12_17_50_13.jpg",
+          "total_slots": 40,
+          "true_occupied": 38,
+          "pred_count": 41,
+          "abs_error": 3
+        },
+        {
+          "image": "2013-03-13_08_15_02.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 42,
+          "abs_error": 2
+        },
+        {
+          "image": "2013-03-13_11_25_06.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 43,
+          "abs_error": 3
+        },
+        {
+          "image": "2013-03-13_14_00_09.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 39,
+          "abs_error": 1
+        },
+        {
+          "image": "2013-03-14_08_10_54.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 31,
+          "abs_error": 9
+        },
+        {
+          "image": "2013-03-14_10_25_57.jpg",
+          "total_slots": 40,
+          "true_occupied": 38,
+          "pred_count": 32,
+          "abs_error": 6
+        },
+        {
+          "image": "2013-03-14_12_45_59.jpg",
+          "total_slots": 40,
+          "true_occupied": 37,
+          "pred_count": 38,
+          "abs_error": 1
+        },
+        {
+          "image": "2013-03-14_15_06_02.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 33,
+          "abs_error": 7
+        },
+        {
+          "image": "2013-03-14_17_21_05.jpg",
+          "total_slots": 40,
+          "true_occupied": 38,
+          "pred_count": 50,
+          "abs_error": 12
+        },
+        {
+          "image": "2013-03-15_07_35_01.jpg",
+          "total_slots": 40,
+          "true_occupied": 18,
+          "pred_count": 19,
+          "abs_error": 1
+        },
+        {
+          "image": "2013-03-15_09_55_04.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 41,
+          "abs_error": 1
+        },
+        {
+          "image": "2013-03-15_12_15_07.jpg",
+          "total_slots": 40,
+          "true_occupied": 33,
+          "pred_count": 43,
+          "abs_error": 10
+        },
+        {
+          "image": "2013-03-15_14_30_10.jpg",
+          "total_slots": 40,
+          "true_occupied": 39,
+          "pred_count": 30,
+          "abs_error": 9
+        },
+        {
+          "image": "2013-03-15_16_50_12.jpg",
+          "total_slots": 40,
+          "true_occupied": 31,
+          "pred_count": 38,
+          "abs_error": 7
+        },
+        {
+          "image": "2013-03-16_06_50_00.jpg",
+          "total_slots": 40,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2013-03-16_09_20_03.jpg",
+          "total_slots": 40,
+          "true_occupied": 19,
+          "pred_count": 19,
+          "abs_error": 0
+        }
+      ]
+    },
+    "imgsz_1280": {
+      "num_images": 30,
+      "total_annotated_slots": 1200,
+      "mean_abs_error": 19.77,
+      "frames": [
+        {
+          "image": "2013-02-22_17_10_11.jpg",
+          "total_slots": 40,
+          "true_occupied": 28,
+          "pred_count": 40,
+          "abs_error": 12
+        },
+        {
+          "image": "2013-02-26_13_49_34.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 74,
+          "abs_error": 34
+        },
+        {
+          "image": "2013-02-26_16_24_37.jpg",
+          "total_slots": 40,
+          "true_occupied": 39,
+          "pred_count": 74,
+          "abs_error": 35
+        },
+        {
+          "image": "2013-02-26_18_44_40.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 58,
+          "abs_error": 18
+        },
+        {
+          "image": "2013-03-05_12_15_07.jpg",
+          "total_slots": 40,
+          "true_occupied": 31,
+          "pred_count": 53,
+          "abs_error": 22
+        },
+        {
+          "image": "2013-03-05_18_25_14.jpg",
+          "total_slots": 40,
+          "true_occupied": 37,
+          "pred_count": 61,
           "abs_error": 24
+        },
+        {
+          "image": "2013-03-09_08_20_02.jpg",
+          "total_slots": 40,
+          "true_occupied": 2,
+          "pred_count": 4,
+          "abs_error": 2
+        },
+        {
+          "image": "2013-03-09_10_35_05.jpg",
+          "total_slots": 40,
+          "true_occupied": 8,
+          "pred_count": 12,
+          "abs_error": 4
+        },
+        {
+          "image": "2013-03-09_12_55_08.jpg",
+          "total_slots": 40,
+          "true_occupied": 5,
+          "pred_count": 4,
+          "abs_error": 1
+        },
+        {
+          "image": "2013-03-09_15_15_10.jpg",
+          "total_slots": 40,
+          "true_occupied": 4,
+          "pred_count": 4,
+          "abs_error": 0
+        },
+        {
+          "image": "2013-03-09_17_30_13.jpg",
+          "total_slots": 40,
+          "true_occupied": 2,
+          "pred_count": 2,
+          "abs_error": 0
+        },
+        {
+          "image": "2013-03-12_07_25_01.jpg",
+          "total_slots": 40,
+          "true_occupied": 38,
+          "pred_count": 43,
+          "abs_error": 5
+        },
+        {
+          "image": "2013-03-12_12_55_08.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 65,
+          "abs_error": 25
+        },
+        {
+          "image": "2013-03-12_15_10_10.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 76,
+          "abs_error": 36
+        },
+        {
+          "image": "2013-03-12_17_50_13.jpg",
+          "total_slots": 40,
+          "true_occupied": 38,
+          "pred_count": 70,
+          "abs_error": 32
+        },
+        {
+          "image": "2013-03-13_08_15_02.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 70,
+          "abs_error": 30
+        },
+        {
+          "image": "2013-03-13_11_25_06.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 68,
+          "abs_error": 28
+        },
+        {
+          "image": "2013-03-13_14_00_09.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 74,
+          "abs_error": 34
+        },
+        {
+          "image": "2013-03-14_08_10_54.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 63,
+          "abs_error": 23
+        },
+        {
+          "image": "2013-03-14_10_25_57.jpg",
+          "total_slots": 40,
+          "true_occupied": 38,
+          "pred_count": 70,
+          "abs_error": 32
+        },
+        {
+          "image": "2013-03-14_12_45_59.jpg",
+          "total_slots": 40,
+          "true_occupied": 37,
+          "pred_count": 60,
+          "abs_error": 23
+        },
+        {
+          "image": "2013-03-14_15_06_02.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 67,
+          "abs_error": 27
+        },
+        {
+          "image": "2013-03-14_17_21_05.jpg",
+          "total_slots": 40,
+          "true_occupied": 38,
+          "pred_count": 70,
+          "abs_error": 32
+        },
+        {
+          "image": "2013-03-15_07_35_01.jpg",
+          "total_slots": 40,
+          "true_occupied": 18,
+          "pred_count": 21,
+          "abs_error": 3
+        },
+        {
+          "image": "2013-03-15_09_55_04.jpg",
+          "total_slots": 40,
+          "true_occupied": 40,
+          "pred_count": 72,
+          "abs_error": 32
+        },
+        {
+          "image": "2013-03-15_12_15_07.jpg",
+          "total_slots": 40,
+          "true_occupied": 33,
+          "pred_count": 53,
+          "abs_error": 20
+        },
+        {
+          "image": "2013-03-15_14_30_10.jpg",
+          "total_slots": 40,
+          "true_occupied": 39,
+          "pred_count": 71,
+          "abs_error": 32
+        },
+        {
+          "image": "2013-03-15_16_50_12.jpg",
+          "total_slots": 40,
+          "true_occupied": 31,
+          "pred_count": 54,
+          "abs_error": 23
+        },
+        {
+          "image": "2013-03-16_06_50_00.jpg",
+          "total_slots": 40,
+          "true_occupied": 0,
+          "pred_count": 0,
+          "abs_error": 0
+        },
+        {
+          "image": "2013-03-16_09_20_03.jpg",
+          "total_slots": 40,
+          "true_occupied": 19,
+          "pred_count": 23,
+          "abs_error": 4
         }
       ]
     }
