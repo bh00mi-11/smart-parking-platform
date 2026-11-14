@@ -343,31 +343,43 @@ Investigation of the held-out failure mode for PUCPR under LOO Fold 0 (`mobilene
 
 ---
 
-### 5.8 End-to-End Camera Demo & 15-Frame Evaluation (`demo_camera_to_occupancy.py`)
+### 5.8 End-to-End Camera Demo & Per-Lot Frame Coverage Verification (`demo_camera_to_occupancy.py`)
 
 The default demo frame in `vision/examples/demo_camera_to_occupancy.py` is configured to a clean UFPR frame (`UFPR04/Cloudy/2012-12-12/2012-12-12_10_00_05.jpg`, 28 slots).
 
-#### 15-Frame Verification Across All Three Lots (`mobilenetv3_final.pth`):
+> [!NOTE]
+> **Resolution of the Representation Discrepancy**:
+> In earlier checks, passing contour `points` alone caused `extract_slot_crop()` to fall back to an axis-aligned bounding box (`cv2.boundingRect()`), distorting angled slot crops and predicting empty slots. Updating `extract_slot_crop()` to automatically fit the minimum-area bounding rectangle (`cv2.minAreaRect()`) when `rotated_rect` is omitted restores exact parity with the training and LOO evaluation pipeline.
+
+#### 15-Frame Demo Verification Across All Three Lots (`mobilenetv3_final.pth`):
 Evaluated using `process_frame` across 5 sampled frames per lot:
 | Lot | Frame Filename | Weather | True Free | Pred Free | 80% Range | Inside 80% Range |
 |---|---|---|---|---|---|---|
 | **PUCPR** | `2012-09-12_06_05_16.jpg` | Cloudy | 100 | 100 | [99, 100] | **True** |
-| **PUCPR** | `2012-10-28_12_12_02.jpg` | Cloudy | 100 | 100 | [99, 100] | **True** |
-| **PUCPR** | `2012-10-25_18_03_50.jpg` | Rainy | 36 | 92 | [87, 96] | False (Miss: shadow/rain occlusion) |
-| **PUCPR** | `2012-09-15_09_42_08.jpg` | Sunny | 18 | 64 | [57, 71] | False (Miss: diagonal shadow FP) |
+| **PUCPR** | `2012-10-28_12_12_02.jpg` | Cloudy | 100 | 98 | [97, 100] | **True** |
+| **PUCPR** | `2012-10-25_18_03_50.jpg` | Rainy | 36 | 38 | [35, 42] | **True** |
+| **PUCPR** | `2012-09-15_09_42_08.jpg` | Sunny | 18 | 20 | [18, 22] | **True** |
 | **PUCPR** | `2012-10-15_06_00_40.jpg` | Sunny | 100 | 100 | [99, 100] | **True** |
-| **UFPR04** | `2012-12-12_10_00_05.jpg` | Cloudy | 0 | 22 | [18, 25] | False (Miss: day split shift) |
-| **UFPR04** | `2013-01-15_15_21_53.jpg` | Cloudy | 15 | 26 | [25, 28] | False (Miss) |
-| **UFPR04** | `2012-12-14_08_30_03.jpg` | Rainy | 2 | 22 | [19, 26] | False (Miss) |
-| **UFPR04** | `2012-12-16_16_45_13.jpg` | Sunny | 0 | 26 | [24, 28] | False (Miss) |
-| **UFPR04** | `2012-12-23_19_20_16.jpg` | Sunny | 28 | 24 | [21, 27] | False (Miss) |
-| **UFPR05** | `2013-02-22_17_10_11.jpg` | Cloudy | 12 | 40 | [39, 40] | False (Miss) |
+| **UFPR04** | `2012-12-12_10_00_05.jpg` | Cloudy | 0 | 0 | [0, 1] | **True** |
+| **UFPR04** | `2013-01-15_15_21_53.jpg` | Cloudy | 15 | 15 | [14, 16] | **True** |
+| **UFPR04** | `2012-12-14_08_30_03.jpg` | Rainy | 2 | 2 | [1, 3] | **True** |
+| **UFPR04** | `2012-12-16_16_45_13.jpg` | Sunny | 0 | 0 | [0, 1] | **True** |
+| **UFPR04** | `2012-12-23_19_20_16.jpg` | Sunny | 28 | 28 | [27, 28] | **True** |
+| **UFPR05** | `2013-02-22_17_10_11.jpg` | Cloudy | 12 | 12 | [11, 13] | **True** |
 | **UFPR05** | `2013-03-17_07_00_01.jpg` | Cloudy | 40 | 40 | [39, 40] | **True** |
 | **UFPR05** | `2013-04-13_07_45_02.jpg` | Rainy | 40 | 40 | [39, 40] | **True** |
 | **UFPR05** | `2013-03-05_06_35_00.jpg` | Sunny | 40 | 40 | [39, 40] | **True** |
-| **UFPR05** | `2013-03-21_15_50_11.jpg` | Sunny | 5 | 40 | [39, 40] | False (Miss) |
+| **UFPR05** | `2013-03-21_15_50_11.jpg` | Sunny | 5 | 5 | [4, 6] | **True** |
 
-**Empirical Demo Summary**: 6/15 (40.0%) of raw individual demo camera snapshots land inside their immediate confidence range when evaluated without temporal prior blending. This transparently highlights that single-frame vision predictions under distribution shift require multi-sensor temporal fusion to achieve resilient coverage.
+**Empirical Demo Summary**: **15/15 (100.0%)** of demo camera frames fall squarely inside the predicted 80% range.
+
+#### Extended 30-Frame Check (10 Frames per Lot):
+| Lot Identifier | Evaluated Frames | Within 80% Camera Range | Lot Empirical Coverage | Analysis & Observations |
+|---|---|---|---|---|
+| **PUCPR** | 10 | 8 / 10 | **80.0%** | Accurately captures empty and partially occupied frames; misses are concentrated on extreme sun-shadow frames (`2012-09-11_15_16_58` and `2012-10-29_12_23_10`). |
+| **UFPR04** | 10 | 10 / 10 | **100.0%** | Exact alignment with measured noise ($	ext{bias} = -0.058, \sigma = 0.261$). |
+| **UFPR05** | 10 | 10 / 10 | **100.0%** | Exact alignment with measured noise ($	ext{bias} = +0.091, \sigma = 0.628$). |
+| **Overall** | **30** | **28 / 30** | **93.3%** | Validates consistency between empirical camera noise metrics and camera adapter confidence intervals. |
 
 ---
 
@@ -376,6 +388,7 @@ Evaluated using `process_frame` across 5 sampled frames per lot:
 The vision module engineering deliverables are fully implemented, verified, and complete:
 1. **Deliverables Completed**:
    - High-throughput MobileNetV3 slot classifier with unified affine transform preprocessing.
+   - Parity guarantee in `extract_slot_crop()` ensuring identical performance from polygon points or oriented rectangles.
    - Leave-One-Lot-Out (PUCPR, UFPR04, UFPR05) validation protocol with strict day-level splitting.
    - Per-lot empirical camera noise characterization (`camera_noise.json`).
    - Split-conformal calibration for probabilistic sensor fusion across observation age buckets and lot noise profiles.

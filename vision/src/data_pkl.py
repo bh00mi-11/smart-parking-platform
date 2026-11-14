@@ -109,6 +109,15 @@ def extract_slot_crop(
     or falls back to polygon bounding box.
     """
     rot = slot_info.get("rotated_rect")
+    contour_pts = slot_info.get("contour") or slot_info.get("points")
+    
+    # If rotated_rect is not provided or incomplete, compute it from contour/points if available
+    if (rot is None or rot.get("w", 0) <= 0 or rot.get("h", 0) <= 0) and contour_pts and len(contour_pts) >= 3:
+        pts_f = np.array(contour_pts, dtype=np.float32)
+        (rcx, rcy), (rw, rh), rangle = cv2.minAreaRect(pts_f)
+        if rw > 0 and rh > 0:
+            rot = {"cx": rcx, "cy": rcy, "w": rw, "h": rh, "angle": rangle}
+
     if rot is not None and rot["w"] > 0 and rot["h"] > 0:
         center = (rot["cx"], rot["cy"])
         size = (int(rot["w"]), int(rot["h"]))
@@ -130,8 +139,8 @@ def extract_slot_crop(
         h = max(1, min(size[1], h_img - y))
 
         crop = rotated[y:y+h, x:x+w]
-    elif slot_info.get("contour"):
-        pts = np.array(slot_info["contour"], dtype=np.int32)
+    elif contour_pts:
+        pts = np.array(contour_pts, dtype=np.int32)
         x, y, w, h = cv2.boundingRect(pts)
         h_img, w_img = image.shape[:2]
         x = max(0, min(x, w_img - 1))
