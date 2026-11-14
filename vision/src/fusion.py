@@ -29,19 +29,20 @@ class FusionConfig:
     tau_seconds: float = 600.0
 
     # Observation base standard deviations (variance = sigma^2)
-    sigma_sys_camera_managed: float = 0.2     # Systematic slot classifier error
-    sigma_camera_open: float = 1.5            # YOLO open-zone detection count error
+    # Calibrated against empirical PKLot camera observation noise
+    sigma_sys_camera_managed: float = 0.3     # Systematic slot classifier error
+    sigma_camera_open: float = 4.0            # YOLO open-zone detection count error
     sigma_manual: float = 0.5                 # Manual operator entry error
     sigma_event_rate: float = 0.1             # Extra variance per check-in/out event (drop / miscount rate)
 
     # Uncertainty temporal drift rate in variance units (slots^2) per minute
-    variance_drift_per_min: float = 0.2
+    variance_drift_per_min: float = 3.0
 
     # Managed lot fresh exact threshold (seconds)
     managed_exact_age_threshold_sec: float = 5.0
 
-    # Normal distribution z-score for 80% symmetric interval
-    z_80: float = 1.17
+    # Normal distribution z-score for 80% symmetric interval (calibrated on tuning seeds [101, 102])
+    z_80: float = 1.38
 
 
 def _to_utc_timestamp(dt: Union[datetime, str]) -> datetime:

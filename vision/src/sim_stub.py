@@ -91,7 +91,8 @@ def simulate_zone_trajectory(
     step_minutes: int = 5,
     camera_interval_minutes: int = 15,
     manual_interval_hours: int = 4,
-    camera_noise_std: float = 1.0,
+    camera_bias: float = 1.45,
+    camera_noise_std: float = 10.92,
     manual_noise_std: float = 0.5,
     event_drop_rate: float = 0.08,
     seed: int = 42
@@ -156,7 +157,7 @@ def simulate_zone_trajectory(
 
         # Check if camera fires at this step
         if last_cam_time is None or (current_time - last_cam_time).total_seconds() >= camera_interval_minutes * 60:
-            cam_count = int(round(true_occupancy + rng.gauss(0, camera_noise_std)))
+            cam_count = int(round(true_occupancy + camera_bias + rng.gauss(0, camera_noise_std)))
             cam_count = max(0, min(capacity, cam_count))
 
             if zone_type == "managed":

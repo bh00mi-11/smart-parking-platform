@@ -88,7 +88,8 @@ def run_fusion_evaluation(
                 step_minutes=10,
                 camera_interval_minutes=35,
                 manual_interval_hours=6,
-                camera_noise_std=1.2,
+                camera_bias=1.45,
+                camera_noise_std=10.92,
                 manual_noise_std=0.8,
                 event_drop_rate=0.10,
                 seed=seed

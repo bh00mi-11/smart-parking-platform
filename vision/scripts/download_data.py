@@ -23,6 +23,16 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 import requests
 from tqdm import tqdm
+import socket
+
+# Fallback DNS resolution for UFPR server if local Windows DNS fails
+_original_getaddrinfo = socket.getaddrinfo
+def _patched_getaddrinfo(host, port, *args, **kwargs):
+    if host in ['www.inf.ufpr.br', 'whiskey.c3sl.ufpr.br']:
+        return _original_getaddrinfo('200.17.202.113', port, *args, **kwargs)
+    return _original_getaddrinfo(host, port, *args, **kwargs)
+
+socket.getaddrinfo = _patched_getaddrinfo
 
 PKLOT_OFFICIAL_URL = "https://www.inf.ufpr.br/vri/databases/PKLot.tar.gz"
 

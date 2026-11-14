@@ -1,0 +1,32 @@
+{
+  "description": "Measured camera observation noise using Leave-One-Lot-Out (LOO) models on unseen PKLot test lots",
+  "lots": {
+    "PUCPR": {
+      "loo_fold": 0,
+      "frame_count": 154,
+      "bias_mean_error": 4.3117,
+      "std_deviation": 18.5653,
+      "mae": 4.7792
+    },
+    "UFPR04": {
+      "loo_fold": 1,
+      "frame_count": 154,
+      "bias_mean_error": -0.0584,
+      "std_deviation": 0.2608,
+      "mae": 0.0584
+    },
+    "UFPR05": {
+      "loo_fold": 2,
+      "frame_count": 154,
+      "bias_mean_error": 0.0909,
+      "std_deviation": 0.628,
+      "mae": 0.2727
+    }
+  },
+  "overall": {
+    "total_frames": 462,
+    "bias_mean_error": 1.4481,
+    "std_deviation": 10.9155,
+    "mae": 1.7035
+  }
+}

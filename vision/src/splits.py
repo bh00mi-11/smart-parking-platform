@@ -258,7 +258,7 @@ def assert_no_data_leakage(splits: Dict[str, List[Tuple[Path, Path]]]):
     """
     image_sets: Dict[str, Set[str]] = {}
     for split_name, sample_list in splits.items():
-        image_sets[split_name] = set(str(img.name) for img, _ in sample_list)
+        image_sets[split_name] = set(str(img.resolve()) for img, _ in sample_list)
 
     split_names = list(splits.keys())
     for i in range(len(split_names)):
