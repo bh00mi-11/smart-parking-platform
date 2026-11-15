@@ -149,9 +149,19 @@ def map_detections_to_slots(
 
     for slot in slots:
         slot_id = slot["slot_id"]
-        points = slot.get("points")
+        points = slot.get("points") or slot.get("contour")
         occupied = 0
         best_conf = 0.0
+
+        if (points is None or len(points) < 3) and slot.get("rotated_rect"):
+            # If rotated_rect is given without points, derive 4 corner points
+            rot = slot["rotated_rect"]
+            cx, cy = float(rot["cx"]), float(rot["cy"])
+            w, h = float(rot["w"]), float(rot["h"])
+            angle = float(rot.get("angle", 0.0))
+            rect = ((cx, cy), (w, h), angle)
+            box_pts = cv2.boxPoints(rect)
+            points = box_pts.tolist()
 
         if points is not None and len(points) >= 3:
             pts_np = np.array(points, dtype=np.float32).reshape((-1, 1, 2))
