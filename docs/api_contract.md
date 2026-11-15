@@ -92,6 +92,106 @@ In an open zone detected via YOLO or manual tally 15 minutes ago, time drift has
 
 ---
 
-## 4. Integration Note for Member 3 (Backend & Simulator) and Member 4 (App)
+## 4. Vision & Fusion REST Endpoints (`/vision`)
+
+The vision module exposes a mountable FastAPI router (`vision.src.api.router`) and standalone microservice (`vision.src.main_vision:app`).
+
+### Running the Microservice
+```powershell
+uvicorn vision.src.main_vision:app --host 0.0.0.0 --port 8000
+```
+Or mount directly into Member 3's main backend application:
+```python
+from vision.src.api import router as vision_router
+app.include_router(vision_router)
+```
+
+### 4.1 `GET /vision/health`
+Returns loaded model weights path and readiness status.
+- **Response `200 OK`**:
+```json
+{
+  "status": "ok",
+  "model_ready": true,
+  "weights_path": "vision\\outputs\\mobilenetv3_final.pth"
+}
+```
+
+### 4.2 `POST /vision/process-frame`
+Multipart image upload accepting raw camera bytes and a JSON `zone_config` field. Returns an `OccupancyUpdate`.
+- **Request (multipart/form-data)**:
+  - `image`: raw image file (`.jpg` / `.png`).
+  - `zone_config`: JSON string specifying zone parameters and slot polygons:
+```json
+{
+  "facility_id": "FAC-PUCPR",
+  "zone_id": "ZONE-PUCPR",
+  "zone_type": "managed",
+  "capacity": 100,
+  "slots": [
+    {
+      "slot_id": "1",
+      "points": [[297.0, 481.0], [339.0, 477.0], [361.0, 528.0], [315.0, 533.0]]
+    }
+  ]
+}
+```
+- **Response `200 OK`**:
+```json
+{
+  "facility_id": "FAC-PUCPR",
+  "zone_id": "ZONE-PUCPR",
+  "timestamp": "2026-11-15T07:13:41.454008Z",
+  "zone_type": "managed",
+  "capacity": 100,
+  "free_low": 99,
+  "free_high": 100,
+  "source": "camera",
+  "confidence": 0.9,
+  "age_seconds": 0.0,
+  "interval_level": 0.8
+}
+```
+
+### 4.3 `POST /vision/estimate`
+JSON endpoint for multi-sensor probabilistic sensor fusion combining camera counts, manual counts, check-in streams, and diurnal priors with freshness decay.
+- **Request (`application/json`)**:
+```json
+{
+  "zone": {
+    "facility_id": "FAC-TEST",
+    "zone_id": "ZONE-M1",
+    "capacity": 60,
+    "zone_type": "managed"
+  },
+  "observations": {
+    "camera": {
+      "timestamp": "2026-11-15T07:00:00Z",
+      "count": 25
+    }
+  },
+  "now": "2026-11-15T07:05:00Z"
+}
+```
+- **Response `200 OK`**:
+```json
+{
+  "facility_id": "FAC-TEST",
+  "zone_id": "ZONE-M1",
+  "timestamp": "2026-11-15T07:05:00Z",
+  "zone_type": "managed",
+  "capacity": 60,
+  "free_low": 27,
+  "free_high": 43,
+  "source": "camera",
+  "confidence": 0.5337,
+  "age_seconds": 300.0,
+  "interval_level": 0.8
+}
+```
+
+---
+
+## 5. Integration Note for Member 3 (Backend & Simulator) and Member 4 (App)
 The IoT event simulator and operator manual entry forms must serialize into this exact `OccupancyUpdate` format when publishing to the broker / Redis stream or returning from REST endpoints.
 
